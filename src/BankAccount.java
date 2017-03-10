@@ -47,7 +47,8 @@ public class BankAccount extends BankProduct {
     }
 
     public boolean addOperation() {
-        return this.OperationList.add(new Operation());
+        //return this.OperationList.add(new Operation()); //TODO: constructor changed
+        return false;
     }
 
     public void depositCash(Double cash) {
