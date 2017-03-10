@@ -6,6 +6,10 @@ import java.util.ArrayList;
 public class Bank {
     private ArrayList<UserAccount> userAccountList;
 
+    Bank() {
+        this.userAccountList = new ArrayList<>();
+    }
+
     void addUserAccount(UserAccount newUserAccount) {
         boolean isAlreadyOnList = false;
         for(UserAccount userAccount : userAccountList) {
@@ -19,5 +23,5 @@ public class Bank {
         }
     }
 
-
+    
 }
