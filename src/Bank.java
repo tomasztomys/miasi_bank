@@ -22,4 +22,10 @@ public class Bank {
             userAccountList.add(newUserAccount);
         }
     }
+
+    boolean removeUserAccount(UserAccount newUserAccount) {
+        return userAccountList.remove(newUserAccount);
+    }
+
+
 }
