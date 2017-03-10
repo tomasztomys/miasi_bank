@@ -9,4 +9,8 @@ public class UserAccount {
     private String Pesel;
     private Date CreatedDate;
 
+    public String getPesel() {
+        return this.Pesel;
+    }
+
 }
