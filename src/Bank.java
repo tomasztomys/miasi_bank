@@ -22,6 +22,4 @@ public class Bank {
             userAccountList.add(newUserAccount);
         }
     }
-
-    
 }
