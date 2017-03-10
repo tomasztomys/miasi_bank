@@ -10,7 +10,7 @@ public class Bank {
         this.userAccountList = new ArrayList<>();
     }
 
-    void addUserAccount(UserAccount newUserAccount) {
+    public UserAccount addUserAccount(UserAccount newUserAccount) {
         boolean isAlreadyOnList = false;
         for(UserAccount userAccount : userAccountList) {
             if(userAccount.getPesel().equals(newUserAccount.getPesel())) isAlreadyOnList = true;
@@ -18,8 +18,11 @@ public class Bank {
 
         if(isAlreadyOnList) {
             System.out.println("Konto założone na ten PESEL już istnieje.");
+            return null;
         } else {
             userAccountList.add(newUserAccount);
+            System.out.println("Konto użytkownika " +  newUserAccount.getPesel() + " zostało utworzone");
+            return newUserAccount;
         }
     }
 
