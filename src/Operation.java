@@ -8,12 +8,12 @@ import java.util.Date;
 public class Operation {
     String id;
     OperationType type;
-    BankAccount source;
-    BankAccount destination;
+    BankProduct source;
+    BankProduct destination;
     Date date;
     Double amount;
 
-    public Operation(OperationType type, BankAccount source, BankAccount destination, Double amount){
+    public Operation(OperationType type, BankProduct source, BankProduct destination, Double amount){
         this.id = new BigInteger(130, new SecureRandom()).toString(32);
         this.type = type;
         this.source = source;

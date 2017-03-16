@@ -10,14 +10,17 @@ public class BankSystem {
         System.out.println("-----------------------");
         UserAccount user2 = bank.addUserAccount("Tomek", "KKK", "1er");
         System.out.println("-----------------------");
+
         BankAccount user1bankAccount1 = bank.addBankAccount(user1);
         System.out.println("-----------------------");
         BankAccount user1bankAccount2 = bank.addBankAccount(user1);
         System.out.println("-----------------------");
         BankAccount user2bankAccount1 = bank.addBankAccount(user2);
+
         System.out.println("-----------------------");
         user1bankAccount1.depositCash(500.0);
         System.out.println("-----------------------");
+
         user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
         System.out.println("-----------------------");
         user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
@@ -30,7 +33,6 @@ public class BankSystem {
 
         user1bankAccount1.widtdrawCash(800.0);
         System.out.println("-----------------------");
-
         user1bankAccount1.widtdrawCash(200.0);
         System.out.println("-----------------------");
     }

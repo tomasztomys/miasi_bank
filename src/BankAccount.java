@@ -41,8 +41,29 @@ public class BankAccount extends BankProduct {
         return OperationList;
     }
 
-    public boolean addInvestment() {
-        return this.InvestmentList.add(new Investment());
+    public Investment addInvestment(Double amount, Date closeDate) {
+        if(this.Balance < amount) {
+            return null;
+        }
+
+        this.Balance -= amount;
+
+        Investment investment = new Investment(this, amount, closeDate, new InterestManager(5));
+
+        Operation operation = new Operation(OperationType.OPEN_DEPOSIT, this, investment, amount);
+        this.historyManager.addOperation(operation);
+
+        this.InvestmentList.add(investment);
+
+        return investment;
+    }
+
+    public void closeInvestment(Investment investment, Date closeTempDate) {
+        Double amount = investment.closeInvestment(closeTempDate);
+        this.Balance += amount;
+
+        Operation operation = new Operation(OperationType.CLOSE_DEPOSIT, null, this, amount);
+        this.historyManager.addOperation(operation);
     }
 
     public boolean addCredit() {
@@ -55,10 +76,14 @@ public class BankAccount extends BankProduct {
     }
 
     private void deposit(Double amount) {
+        if(amount <= 0) return;
+
         this.Balance += amount;
     }
 
     public void depositCash(Double amount) {
+        if(amount <= 0) return;
+
         deposit(amount);
 
         Operation operation = new Operation(OperationType.DEPOSIT, null, this, amount);
