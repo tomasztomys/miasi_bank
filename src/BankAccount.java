@@ -41,7 +41,7 @@ public class BankAccount extends BankProduct {
         return OperationList;
     }
 
-    public Investment addInvestment(Double amount, Date closeDate) {
+    public String addInvestment(Double amount, Date closeDate) {
         if(this.Balance < amount) {
             return null;
         }
@@ -55,23 +55,73 @@ public class BankAccount extends BankProduct {
 
         this.InvestmentList.add(investment);
 
-        return investment;
+        return investment.getId();
     }
 
-    public void closeInvestment(Investment investment, Date closeTempDate) {
-        Double amount = investment.closeInvestment(closeTempDate);
+    public boolean closeInvestment(String investmentID, Date closeTempDate) {
+        Investment investment = null;
+
+        for (Investment tempInvestment: InvestmentList) {
+            if(tempInvestment.getId().equals(investmentID)) investment = tempInvestment;
+        }
+
+        if(investment != null) {
+            Double amount = investment.closeInvestment(closeTempDate);
+            this.Balance += amount;
+
+            if(amount > investment.getDeposit()) {
+                Operation operation = new Operation(OperationType.CLOSE_DEPOSIT, investment, this, amount);
+                this.historyManager.addOperation(operation);
+            } else {
+                Operation operation = new Operation(OperationType.BREAK_DEPOSIT, investment, this, amount);
+                this.historyManager.addOperation(operation);
+            }
+
+            investment.disableInvestment(amount);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String takeCredit(Double amount) {
+        if(amount <= 0) return null;
+
         this.Balance += amount;
 
-        Operation operation = new Operation(OperationType.CLOSE_DEPOSIT, null, this, amount);
+        Credit credit = new Credit(this, amount, new InterestManager(5));
+
+        Operation operation = new Operation(OperationType.TAKE_CREDIT, this, credit, amount);
         this.historyManager.addOperation(operation);
+
+        this.CreditList.add(credit);
+
+        return credit.getId();
     }
 
-    public boolean addCredit() {
-        return this.CreditList.add(new Credit());
-    }
+    public boolean payOffDebt(String creditID, Date closeTempDate) {
+        Credit credit = null;
 
-    public boolean addOperation() {
-        //return this.OperationList.add(new Operation()); //TODO: constructor changed
+        for (Credit tempCredit: CreditList) {
+            if(tempCredit.getId().equals(creditID)) credit = tempCredit;
+        }
+
+        if(credit != null) {
+            Double amount = credit.payOffDebt(closeTempDate);
+
+            if(this.Balance >= amount && amount > 0) {
+                this.Balance -= amount;
+
+                Operation operation = new Operation(OperationType.PAY_OFF_DEBT, this, credit, amount);
+                this.historyManager.addOperation(operation);
+
+                return true;
+            }
+        } else {
+            return false;
+        }
+
         return false;
     }
 
