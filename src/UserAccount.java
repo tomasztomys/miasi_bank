@@ -44,10 +44,7 @@ public class UserAccount {
         return BankAccounts;
     }
 
-    public BankAccount addBankAccount() {
-        BankAccount bankAccount = new BankAccount();
+    public void addBankAccount(BankAccount bankAccount) {
         this.BankAccounts.add(bankAccount);
-        System.out.println("Konto bankowe " +  bankAccount.getId() + " zostało utworzone dla użytkownika o numerze PESEL: " + this.Pesel);
-        return bankAccount;
     }
 }

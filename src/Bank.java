@@ -1,17 +1,23 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by TG & MM on 10.03.2017.
  */
 public class Bank {
-    private ArrayList<UserAccount> userAccountList;
+    private Set<UserAccount> userAccountList;
+    private Set<BankAccount> bankAccounts;
 
     Bank() {
-        this.userAccountList = new ArrayList<>();
+        this.userAccountList = new HashSet<>();
+        this.bankAccounts = new HashSet<>();
     }
 
-    public UserAccount addUserAccount(UserAccount newUserAccount) {
+    public UserAccount addUserAccount(String name, String surname, String pesel) {
         boolean isAlreadyOnList = false;
+        UserAccount newUserAccount = new UserAccount(name, surname, pesel);
+
         for(UserAccount userAccount : userAccountList) {
             if(userAccount.getPesel().equals(newUserAccount.getPesel())) isAlreadyOnList = true;
         }
@@ -26,9 +32,17 @@ public class Bank {
         }
     }
 
-    boolean removeUserAccount(UserAccount newUserAccount) {
+    public boolean removeUserAccount(UserAccount newUserAccount) {
         return userAccountList.remove(newUserAccount);
     }
 
+    public BankAccount addBankAccount(UserAccount user) {
+        BankAccount bankAccount = new BankAccount();
 
+        this.bankAccounts.add(bankAccount);
+        user.addBankAccount(bankAccount);
+
+        System.out.println("Konto bankowe " +  bankAccount.getId() + " zostało utworzone dla użytkownika o numerze PESEL: " + user.getPesel());
+        return bankAccount;
+    }
 }

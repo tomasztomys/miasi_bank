@@ -11,11 +11,14 @@ public class BankAccount extends BankProduct {
     private List<Operation> OperationList;
 
     public BankAccount() {
+        super();
+
         this.Id = RandomString.get();
         this.Balance = 0.0;
         this.InvestmentList = new HashSet<>();
         this.CreditList = new HashSet<>();
         this.OperationList = new ArrayList<>();
+
     }
 
     public String getId() {
@@ -51,7 +54,49 @@ public class BankAccount extends BankProduct {
         return false;
     }
 
-    public void depositCash(Double cash) {
-        this.Balance += cash; //TODO: operation
+    private void deposit(Double amount) {
+        this.Balance += amount;
+    }
+
+    public void depositCash(Double amount) {
+        deposit(amount);
+
+        Operation operation = new Operation(OperationType.DEPOSIT, null, this, amount);
+        this.historyManager.addOperation(operation);
+
+        System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
+    }
+
+    public Double widtdrawCash(Double amount) {
+        if(amount > this.Balance || amount <= 0) {
+            System.out.println("Błędna kwota przelewu lub brak środków na koncie");
+            return 0.0;
+        }
+
+        this.Balance -= amount;
+
+        Operation operation = new Operation(OperationType.WITHDRAW, this, null, amount);
+        this.historyManager.addOperation(operation);
+
+        System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
+
+        return amount;
+    }
+
+    public boolean makeTransfer(BankAccount destination, Double amount) {
+        if(amount > this.Balance || amount <= 0) {
+            System.out.println("Błędna kwota przelewu");
+            return false;
+        }
+
+        destination.deposit(amount);
+        this.Balance -= amount;
+
+        Operation operation = new Operation(OperationType.TRANSFER, this, destination, amount);
+        this.historyManager.addOperation(operation);
+
+        System.out.println("Wykonano przelew: " + amount + " do konta " + destination.getId() + " z konta: " + this.getId() + " Razem: " + this.getBalance());
+
+        return true;
     }
 }
