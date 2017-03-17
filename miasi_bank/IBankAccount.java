@@ -22,7 +22,7 @@ public interface IBankAccount {
 
     void depositCash(Double amount);
 
-    Double widtdrawCash(Double amount);
+    Double withdrawCash(Double amount);
 
     boolean makeTransfer(BankAccount destination, Double amount);
 }

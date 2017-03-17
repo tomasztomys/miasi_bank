@@ -1,8 +1,5 @@
 package miasi_bank;
 
-import miasi_bank.Bank;
-import miasi_bank.BankAccount;
-
 /**
  * Created by inf117182 on 10.03.2017.
  */
@@ -39,9 +36,9 @@ public class BankSystem {
         System.out.println("User 2 ma: " + user2bankAccount1.getBalance());
         System.out.println("-----------------------");
 
-        user1bankAccount1.widtdrawCash(800.0);
+        user1bankAccount1.withdrawCash(800.0);
         System.out.println("-----------------------");
-        user1bankAccount1.widtdrawCash(200.0);
+        user1bankAccount1.withdrawCash(200.0);
         System.out.println("-----------------------");
     }
 }

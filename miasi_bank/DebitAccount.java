@@ -43,8 +43,8 @@ public class DebitAccount implements IBankAccount {
         bankAccount.depositCash(amount);
     }
 
-    public Double widtdrawCash(Double amount) {
-        return bankAccount.widtdrawCash(amount);
+    public Double withdrawCash(Double amount) {
+        return bankAccount.withdrawCash(amount);
     }
 
     public boolean makeTransfer(BankAccount destination, Double amount) {
