@@ -9,6 +9,8 @@ import java.util.Set;
  */
 public class Bank {
     private Set<UserAccount> userAccountList;
+
+
     private Set<IBankAccount> bankAccounts;
 
     public Bank() {
@@ -58,4 +60,13 @@ public class Bank {
 
         return newBankAccount;
     }
+
+    public Set<UserAccount> getUserAccountList() {
+        return userAccountList;
+    }
+
+    public Set<IBankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
 }

@@ -1,6 +1,7 @@
 package tests;
 
 import miasi_bank.BankAccount;
+import miasi_bank.DebitAccount;
 import org.junit.*;
 import miasi_bank.Bank;
 import miasi_bank.UserAccount;
@@ -56,7 +57,13 @@ public class BankTest {
 
     @Test
     public void addDebit() throws Exception {
+        UserAccount user1 = this.bank.addUserAccount("Tomek", "Zbyszek", "123");
+        BankAccount bankAccount = this.bank.addBankAccount(user1);
 
+        DebitAccount debitAccount = this.bank.addDebit(user1, bankAccount, 1000.00);
+        assertNotNull(debitAccount);
+        assertThat(debitAccount, instanceOf(DebitAccount.class));
+        assertEquals(this.bank.getBankAccounts().size(), 1);
     }
 
     @After
