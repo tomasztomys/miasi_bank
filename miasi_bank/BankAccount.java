@@ -1,5 +1,7 @@
 package miasi_bank;
 
+import miasi_bank.custom_exceptions.InsufficientBalanceException;
+
 import java.util.*;
 
 /**
@@ -138,10 +140,10 @@ public class BankAccount extends BankProduct implements IBankAccount {
         System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
     }
 
-    public Double widtdrawCash(Double amount) {
+    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
         if(amount > this.Balance || amount <= 0) {
             System.out.println("Błędna kwota przelewu lub brak środków na koncie");
-            return 0.0;
+            throw new InsufficientBalanceException();
         }
 
         this.Balance -= amount;

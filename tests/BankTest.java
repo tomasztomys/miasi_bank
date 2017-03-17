@@ -1,10 +1,9 @@
 package tests;
 
-import miasi_bank.BankAccount;
-import miasi_bank.DebitAccount;
+import miasi_bank.*;
 import org.junit.*;
-import miasi_bank.Bank;
-import miasi_bank.UserAccount;
+
+import java.util.HashSet;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
@@ -47,9 +46,16 @@ public class BankTest {
     public void addBankAccount() throws Exception {
         UserAccount user1 = this.bank.addUserAccount("Tomek", "Zbyszek", "123");
 
-        BankAccount bankAccount = this.bank.addBankAccount(user1);
-        assertNotNull(bankAccount);
-        assertEquals(user1.getBankAccounts().size(), 1);
+        BankAccount bankAccount1 = bank.addBankAccount(user1);
+        assertNotNull(bankAccount1);
+        assertEquals(this.bank.getBankAccounts().size(), 1);
+        BankAccount bankAccount2 = bank.addBankAccount(user1);
+        assertNotNull(bankAccount2);
+        assertEquals(this.bank.getBankAccounts().size(), 2);
+        HashSet<IBankAccount> bankAccounts = new HashSet<>();
+        bankAccounts.add(bankAccount1);
+        bankAccounts.add(bankAccount2);
+        assertEquals(this.bank.getBankAccounts(), bankAccounts);
     }
 
     @Test
