@@ -1,5 +1,7 @@
 package miasi_bank;
 
+import miasi_bank.custom_exceptions.InsufficientBalanceException;
+
 import java.util.*;
 
 /**
@@ -43,7 +45,7 @@ public class DebitAccount implements IBankAccount {
         bankAccount.depositCash(amount);
     }
 
-    public Double withdrawCash(Double amount) {
+    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
         return bankAccount.withdrawCash(amount);
     }
 

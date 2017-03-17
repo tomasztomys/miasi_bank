@@ -3,6 +3,7 @@ package tests;
 import miasi_bank.Bank;
 import miasi_bank.BankAccount;
 import miasi_bank.UserAccount;
+import miasi_bank.custom_exceptions.InsufficientBalanceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -94,14 +95,13 @@ public class BankAccountTest {
         assertEquals(bankAccount.getBalance(), 0, 0);
     }
 
-    @Test
+    @Test(expected= InsufficientBalanceException.class)
     public void withdrawCrashMoreOfBalance() throws Exception {
         BankAccount bankAccount = bank.addBankAccount(this.user);
         Double amount1 = 100.00;
         Double withdrawAmount = 500.00;
         bankAccount.depositCash(amount1);
         bankAccount.withdrawCash(withdrawAmount);
-        assertEquals(bankAccount.getBalance(), 0, 0);  //TODO Potrzebny wyjątek, bo przy wypłacie takiej kwoty jak na koncie a wypłacie większej kwoty zwraca to samo
     }
 
     @After

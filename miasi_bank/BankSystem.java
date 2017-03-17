@@ -1,5 +1,7 @@
 package miasi_bank;
 
+import miasi_bank.custom_exceptions.InsufficientBalanceException;
+
 /**
  * Created by inf117182 on 10.03.2017.
  */
@@ -36,9 +38,17 @@ public class BankSystem {
         System.out.println("User 2 ma: " + user2bankAccount1.getBalance());
         System.out.println("-----------------------");
 
-        user1bankAccount1.withdrawCash(800.0);
+        try {
+            user1bankAccount1.withdrawCash(800.0);
+        } catch (InsufficientBalanceException e) {
+
+        }
         System.out.println("-----------------------");
-        user1bankAccount1.withdrawCash(200.0);
+        try {
+            user1bankAccount1.withdrawCash(200.0);
+        } catch (InsufficientBalanceException e) {
+
+        }
         System.out.println("-----------------------");
     }
 }

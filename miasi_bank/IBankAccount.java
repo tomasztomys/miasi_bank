@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import miasi_bank.BankAccount;
+import miasi_bank.custom_exceptions.InsufficientBalanceException;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public interface IBankAccount {
 
     void depositCash(Double amount);
 
-    Double withdrawCash(Double amount);
+    Double withdrawCash(Double amount) throws InsufficientBalanceException;
 
     boolean makeTransfer(BankAccount destination, Double amount);
 }
