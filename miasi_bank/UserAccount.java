@@ -42,8 +42,8 @@ public class UserAccount {
         return CreatedDate;
     }
 
-    public Set<IBankAccount> getBankAccounts() {
-        return BankAccounts;
+    public Set getBankAccounts() {
+        return this.BankAccounts;
     }
 
     public void addBankAccount(BankAccount bankAccount) {

@@ -10,19 +10,15 @@ import static org.junit.Assert.*;
  * Created by inf117199 on 17.03.2017.
  */
 public class BankTest {
-
     private Bank bank;
 
     @Before
     public void setUp() {
         this.bank = new Bank();
-        System.out.println("now");
     }
 
     @Test
     public void addUserAccount() throws Exception {
-
-
         UserAccount user1 = this.bank.addUserAccount("Tomek", "Zbyszek", "123");
         assertNotNull(user1);
     }
