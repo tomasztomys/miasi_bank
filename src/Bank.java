@@ -7,7 +7,7 @@ import java.util.Set;
  */
 public class Bank {
     private Set<UserAccount> userAccountList;
-    private Set<BankAccount> bankAccounts;
+    private Set<IBankAccount> bankAccounts;
 
     Bank() {
         this.userAccountList = new HashSet<>();
@@ -44,5 +44,16 @@ public class Bank {
 
         System.out.println("Konto bankowe " +  bankAccount.getId() + " zostało utworzone dla użytkownika o numerze PESEL: " + user.getPesel());
         return bankAccount;
+    }
+
+    public DebitAccount addDebit(UserAccount user1, BankAccount bankAccount, Double maxDebit) {
+        bankAccounts.remove(bankAccount);
+
+        DebitAccount newBankAccount = new DebitAccount(bankAccount, maxDebit);
+
+        bankAccounts.add(newBankAccount);
+        user1.addDebit(bankAccount, newBankAccount);
+
+        return newBankAccount;
     }
 }

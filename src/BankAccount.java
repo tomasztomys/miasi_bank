@@ -3,12 +3,11 @@ import java.util.*;
 /**
  * Created by inf117182 on 10.03.2017.
  */
-public class BankAccount extends BankProduct {
+public class BankAccount extends BankProduct implements IBankAccount {
     private String Id;
     private Double Balance;
     private Set<Investment> InvestmentList;
     private Set<Credit> CreditList;
-    private List<Operation> OperationList;
 
     public BankAccount() {
         super();
@@ -17,7 +16,6 @@ public class BankAccount extends BankProduct {
         this.Balance = 0.0;
         this.InvestmentList = new HashSet<>();
         this.CreditList = new HashSet<>();
-        this.OperationList = new ArrayList<>();
 
     }
 
@@ -35,10 +33,6 @@ public class BankAccount extends BankProduct {
 
     public Set<Credit> getCreditList() {
         return CreditList;
-    }
-
-    public List<Operation> getOperationList() {
-        return OperationList;
     }
 
     public String addInvestment(Double amount, Date closeDate) {

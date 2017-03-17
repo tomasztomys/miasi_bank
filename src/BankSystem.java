@@ -16,6 +16,9 @@ public class BankSystem {
         BankAccount user1bankAccount2 = bank.addBankAccount(user1);
         System.out.println("-----------------------");
         BankAccount user2bankAccount1 = bank.addBankAccount(user2);
+        System.out.println("-----------------------");
+
+        DebitAccount user1debitAccount1 = bank.addDebit(user1, user1bankAccount2, 5000.0);
 
         System.out.println("-----------------------");
         user1bankAccount1.depositCash(500.0);

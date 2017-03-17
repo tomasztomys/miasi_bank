@@ -10,7 +10,7 @@ public class UserAccount {
     private String Surname;
     private String Pesel;
     private Date CreatedDate;
-    private Set<BankAccount> BankAccounts;
+    private Set<IBankAccount> BankAccounts;
 
     public UserAccount(String Name, String Surname, String Pesel) {
         this.Name = Name;
@@ -40,11 +40,19 @@ public class UserAccount {
         return CreatedDate;
     }
 
-    public Set<BankAccount> getBankAccounts() {
+    public Set<IBankAccount> getBankAccounts() {
         return BankAccounts;
     }
 
     public void addBankAccount(BankAccount bankAccount) {
         this.BankAccounts.add(bankAccount);
+    }
+
+    public void addDebit(BankAccount bankAccount, DebitAccount debitAccount) {
+        BankAccounts.remove(bankAccount);
+
+        DebitAccount newBankAccount = debitAccount;
+
+        BankAccounts.add(newBankAccount);
     }
 }
