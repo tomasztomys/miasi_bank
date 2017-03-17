@@ -1,3 +1,5 @@
+package miasi_bank;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Date;

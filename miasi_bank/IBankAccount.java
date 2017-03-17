@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import miasi_bank.BankAccount;
+
 import java.util.Date;
 
 /**

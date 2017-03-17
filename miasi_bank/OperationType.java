@@ -1,3 +1,5 @@
+package miasi_bank;
+
 /**
  * Created by Tomasz Gwoździk on 16.03.2017.
  */

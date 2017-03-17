@@ -1,3 +1,8 @@
+package miasi_bank;
+
+import miasi_bank.Bank;
+import miasi_bank.BankAccount;
+
 /**
  * Created by inf117182 on 10.03.2017.
  */
