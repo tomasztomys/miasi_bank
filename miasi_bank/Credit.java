@@ -40,7 +40,7 @@ public class Credit extends BankProduct {
         long diff = closeTempDate.getTime() - createDate.getTime();
         long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        Double returnAmount =  this.amount + (this.amount * interestManager.getPercentage() / 100 * diffDays / 365.25 );
+        Double returnAmount =  this.amount + (this.amount * (interestManager.getPercentage() / 100.0) * (diffDays / 365.0) * diffDays);
 
         return returnAmount;
     }
