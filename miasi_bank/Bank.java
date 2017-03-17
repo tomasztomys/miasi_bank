@@ -11,7 +11,7 @@ public class Bank {
     private Set<UserAccount> userAccountList;
     private Set<IBankAccount> bankAccounts;
 
-    Bank() {
+    public Bank() {
         this.userAccountList = new HashSet<>();
         this.bankAccounts = new HashSet<>();
     }
