@@ -36,6 +36,10 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return InvestmentList;
     }
 
+    public Investment getInvestmentById(String id) {
+        return this.InvestmentList.stream().filter(s -> s.getId().equals(id)).findFirst().get();
+    }
+
     public Set<Credit> getCreditList() {
         return CreditList;
     }
@@ -67,15 +71,10 @@ public class BankAccount extends BankProduct implements IBankAccount {
 
     }
 
-    public String addInvestment(double amount, Date closeDate) {
-        if(this.Balance < amount) {
-            return null;
-        }
-
-        this.Balance -= amount;
+    public String addInvestment(double amount, Date closeDate) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        this.withdraw(amount);
 
         Investment investment = new Investment(this, amount, closeDate, new InterestManager(5));
-
         Operation operation = new Operation(OperationType.OPEN_DEPOSIT, this, investment, amount);
         this.historyManager.addOperation(operation);
 

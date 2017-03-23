@@ -2,12 +2,16 @@ package tests;
 
 import miasi_bank.Bank;
 import miasi_bank.BankAccount;
+import miasi_bank.Investment;
 import miasi_bank.UserAccount;
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
 import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -131,6 +135,29 @@ public class BankAccountTest {
         this.bankAccount.depositCash(depositAmount);
 
         this.bankAccount.makeTransfer(bankAccountTemp, transferAmount);
+    }
+
+    @Test
+    public void addInvestment() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+        double amount = 500.00;
+        double investmentAmount = 200.00;
+        this.bankAccount.depositCash(amount);
+        String investmentIdTemp = this.bankAccount.addInvestment(investmentAmount, new Date(2018, 5, 15));
+        assertEquals(this.bankAccount.getBalance(), amount - investmentAmount, 0.01);
+
+        Investment investmentTemp = this.bankAccount.getInvestmentById(investmentIdTemp);
+        assertEquals(investmentTemp.getDeposit(), investmentAmount, 0.01);
+    }
+
+    @Test
+    public void getInvestmentById() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+        double amount = 500.00;
+        double investmentAmount = 200.00;
+        this.bankAccount.depositCash(amount);
+        String investmentIdTemp = this.bankAccount.addInvestment(investmentAmount, new Date(2018, 5, 15));
+
+        Investment investmentTemp = this.bankAccount.getInvestmentById(investmentIdTemp);
+        assertEquals(investmentTemp.getId(), investmentIdTemp);
     }
 
 

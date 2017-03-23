@@ -26,7 +26,7 @@ public class DebitAccount implements IBankAccount {
         return bankAccount.getBalance();
     }
 
-    public String addInvestment(double amount, Date closeDate) {
+    public String addInvestment(double amount, Date closeDate) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
         return bankAccount.addInvestment(amount, closeDate);
     }
 

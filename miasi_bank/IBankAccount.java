@@ -14,7 +14,7 @@ public interface IBankAccount {
 
     double getBalance();
 
-    String addInvestment(double amount, Date closeDate);
+    String addInvestment(double amount, Date closeDate) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
 
     boolean closeInvestment(String investmentID, Date closeTempDate) ;
 
