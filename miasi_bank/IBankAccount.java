@@ -1,7 +1,7 @@
 package miasi_bank;
 
-import miasi_bank.BankAccount;
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransactionException;
 
 import java.util.Date;
 
@@ -11,19 +11,19 @@ import java.util.Date;
 public interface IBankAccount {
     String getId();
 
-    Double getBalance();
+    double getBalance();
 
-    String addInvestment(Double amount, Date closeDate);
+    String addInvestment(double amount, Date closeDate) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException;
 
     boolean closeInvestment(String investmentID, Date closeTempDate) ;
 
-    String takeCredit(Double amount);
+    String takeCredit(double amount);
 
     boolean payOffDebt(String creditID, Date closeTempDate);
 
-    void depositCash(Double amount);
+    void depositCash(double amount) throws NegativeValueOfMoneyTransactionException;
 
-    Double withdrawCash(Double amount) throws InsufficientBalanceException;
+    double withdrawCash(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException;
 
-    boolean makeTransfer(BankAccount destination, Double amount);
+    boolean makeTransfer(BankAccount destination, double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException;
 }

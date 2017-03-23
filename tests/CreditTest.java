@@ -33,7 +33,7 @@ public class CreditTest {
 
     @Test
     public void payOffDebtIsActive() throws Exception {
-        Double after = credit1.payOffDebt(new Date(new Date().getTime()+(long)(1000*3600*24*10)));
+        double after = credit1.payOffDebt(new Date(new Date().getTime()+(long)(1000*3600*24*10)));
         System.out.println(after);
         System.out.println(new Date(new Date().getTime()+(long)(1000*3600*24*10)).toString());
         assertEquals("Instalment test",202740,Math.round(after*100.0));

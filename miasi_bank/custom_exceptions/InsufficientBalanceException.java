@@ -1,18 +1,11 @@
 package miasi_bank.custom_exceptions;
 
-/**
- * Created by inf117225 on 17.03.2017.
- */
 public class InsufficientBalanceException extends Exception {
     public InsufficientBalanceException() {
-        super();
+        super("Wyjątek: Nie wystarczające środki na koncie");
     }
-    public InsufficientBalanceException(final String message) {
+    public InsufficientBalanceException(String message) {
         super(message);
-    }
-
-    public InsufficientBalanceException(final String message, final Throwable cause) {
-        super(message, cause);
-
+        System.out.println("Wyjątek: " + message);
     }
 }

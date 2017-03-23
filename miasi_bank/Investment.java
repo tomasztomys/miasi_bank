@@ -13,11 +13,11 @@ public class Investment extends BankProduct {
     private Date createDate;
     private Date closeDate;
     boolean isActive;
-    Double deposit;
+    double deposit;
     InterestManager interestManager;
     BankAccount bankAccount;
 
-    public Investment(BankAccount bankAccount, Double amount, Date closeDate, InterestManager interestManager) {
+    public Investment(BankAccount bankAccount, double amount, Date closeDate, InterestManager interestManager) {
         Date createDate = new Date();
 
         if(closeDate.compareTo(createDate) <= 0) {
@@ -39,10 +39,10 @@ public class Investment extends BankProduct {
         return this.id;
     }
 
-    public Double closeInvestment(Date closeTempDate) {
+    public double closeInvestment(Date closeTempDate) {
         if(!this.isActive) return 0.0;
 
-        Double returnDeposit = this.deposit;
+        double returnDeposit = this.deposit;
 
         if(closeTempDate.after(createDate)) {
             long diff = closeTempDate.getTime() - createDate.getTime();
@@ -54,11 +54,11 @@ public class Investment extends BankProduct {
         return returnDeposit;
     }
 
-    public Double getDeposit() {
+    public double getDeposit() {
         return deposit;
     }
 
-    public void disableInvestment(Double amount) {
+    public void disableInvestment(double amount) {
         if(this.isActive) this.isActive = false;
 
         Operation operation = new Operation(OperationType.CLOSE_DEPOSIT, this.bankAccount, this, amount);

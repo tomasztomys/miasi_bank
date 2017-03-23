@@ -50,7 +50,7 @@ public class Bank {
         return bankAccount;
     }
 
-    public DebitAccount addDebit(UserAccount user1, BankAccount bankAccount, Double maxDebit) {
+    public DebitAccount addDebit(UserAccount user1, BankAccount bankAccount, double maxDebit) {
         bankAccounts.remove(bankAccount);
 
         DebitAccount newBankAccount = new DebitAccount(bankAccount, maxDebit);

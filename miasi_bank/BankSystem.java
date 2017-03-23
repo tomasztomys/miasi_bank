@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransactionException;
 
 /**
  * Created by inf117182 on 10.03.2017.
@@ -25,14 +26,36 @@ public class BankSystem {
         DebitAccount user1debitAccount1 = bank.addDebit(user1, user1bankAccount2, 5000.0);
 
         System.out.println("-----------------------");
-        user1bankAccount1.depositCash(500.0);
+        try {
+            user1bankAccount1.depositCash(500.0);
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
+        }
         System.out.println("-----------------------");
 
-        user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
+        }
         System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
+        }
         System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, 200.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, 200.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
+        }
         System.out.println("-----------------------");
 
         System.out.println("User 2 ma: " + user2bankAccount1.getBalance());
@@ -42,12 +65,16 @@ public class BankSystem {
             user1bankAccount1.withdrawCash(800.0);
         } catch (InsufficientBalanceException e) {
 
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
         }
         System.out.println("-----------------------");
         try {
             user1bankAccount1.withdrawCash(200.0);
         } catch (InsufficientBalanceException e) {
 
+        } catch (NegativeValueOfMoneyTransactionException negativeValueOfMoneyTransactionException) {
+            negativeValueOfMoneyTransactionException.printStackTrace();
         }
         System.out.println("-----------------------");
     }

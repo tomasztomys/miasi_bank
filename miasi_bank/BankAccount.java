@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransactionException;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ import java.util.*;
  */
 public class BankAccount extends BankProduct implements IBankAccount {
     private String Id;
-    private Double Balance;
+    private double Balance;
     private Set<Investment> InvestmentList;
     private Set<Credit> CreditList;
 
@@ -27,7 +28,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return Id;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return Balance;
     }
 
@@ -35,19 +36,45 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return InvestmentList;
     }
 
+    public Investment getInvestmentById(String id) throws NoSuchElementException {
+        return this.InvestmentList.stream().filter(s -> s.getId().equals(id)).findFirst().get();
+    }
+
     public Set<Credit> getCreditList() {
         return CreditList;
     }
 
-    public String addInvestment(Double amount, Date closeDate) {
-        if(this.Balance < amount) {
-            return null;
+    private void validateAmount(double amount) throws NegativeValueOfMoneyTransactionException {
+        if(amount <= 0) {
+            throw new NegativeValueOfMoneyTransactionException();
         }
+    }
 
-        this.Balance -= amount;
+    private void checkSufficientAmountInBalance(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
+        this.validateAmount(amount);
+        if(amount > this.Balance) {
+            throw new InsufficientBalanceException();
+        }
+    }
+
+    private void deposit(double amount) throws NegativeValueOfMoneyTransactionException {
+        this.validateAmount(amount);
+
+        this.Balance += amount;
+    }
+
+    private void withdraw(double amount) throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
+        this.validateAmount(amount);
+        this.checkSufficientAmountInBalance(amount);
+
+        this.Balance -=amount;
+
+    }
+
+    public String addInvestment(double amount, Date closeDate) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
+        this.withdraw(amount);
 
         Investment investment = new Investment(this, amount, closeDate, new InterestManager(5));
-
         Operation operation = new Operation(OperationType.OPEN_DEPOSIT, this, investment, amount);
         this.historyManager.addOperation(operation);
 
@@ -64,7 +91,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
 
         if(investment != null) {
-            Double amount = investment.closeInvestment(closeTempDate);
+            double amount = investment.closeInvestment(closeTempDate);
             this.Balance += amount;
 
             if(amount > investment.getDeposit()) {
@@ -83,7 +110,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
     }
 
-    public String takeCredit(Double amount) {
+    public String takeCredit(double amount) {
         if(amount <= 0) return null;
 
         this.Balance += amount;
@@ -106,7 +133,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
 
         if(credit != null) {
-            Double amount = credit.payOffDebt(closeTempDate);
+            double amount = credit.payOffDebt(closeTempDate);
 
             if(this.Balance >= amount && amount > 0) {
                 this.Balance -= amount;
@@ -123,53 +150,35 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return false;
     }
 
-    private void deposit(Double amount) {
-        if(amount <= 0) return;
-
-        this.Balance += amount;
-    }
-
-    public void depositCash(Double amount) {
-        if(amount <= 0) return;
-
+    public void depositCash(double amount) throws NegativeValueOfMoneyTransactionException {
         deposit(amount);
-
         Operation operation = new Operation(OperationType.DEPOSIT, null, this, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
+//
+//        System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
     }
 
-    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
-        if(amount > this.Balance || amount <= 0) {
-            System.out.println("Błędna kwota przelewu lub brak środków na koncie");
-            throw new InsufficientBalanceException();
-        }
-
-        this.Balance -= amount;
-
+    public double withdrawCash(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
+        this.withdraw(amount);
         Operation operation = new Operation(OperationType.WITHDRAW, this, null, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
-
+//
+//        System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
+//
         return amount;
+
     }
 
-    public boolean makeTransfer(BankAccount destination, Double amount) {
-        if(amount > this.Balance || amount <= 0) {
-            System.out.println("Błędna kwota przelewu");
-            return false;
-        }
-
+    public boolean makeTransfer(BankAccount destination, double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
+        this.withdraw(amount);
         destination.deposit(amount);
-        this.Balance -= amount;
-
         Operation operation = new Operation(OperationType.TRANSFER, this, destination, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Wykonano przelew: " + amount + " do konta " + destination.getId() + " z konta: " + this.getId() + " Razem: " + this.getBalance());
+//
+//        System.out.println("Wykonano przelew: " + amount + " do konta " + destination.getId() + " z konta: " + this.getId() + " Razem: " + this.getBalance());
 
         return true;
     }
+
+
 }
