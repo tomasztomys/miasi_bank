@@ -1,9 +1,6 @@
 package tests;
 
-import miasi_bank.Bank;
-import miasi_bank.BankAccount;
-import miasi_bank.Investment;
-import miasi_bank.UserAccount;
+import miasi_bank.*;
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
 import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransactionException;
 import org.junit.After;
@@ -189,16 +186,36 @@ public class BankAccountTest {
 //
 //    }
 //
-//    @Test
-//    public void takeCredit() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void payOffDebt() throws Exception {
-//
-//    }
-//
+    @Test
+    public void takeCredit() throws Exception {
+        double amount = 5000.0;
+        String creditIdTemp = this.bankAccount.takeCredit(amount);
+
+        assertEquals(this.bankAccount.getBalance(), amount, 0.01);
+
+        //TODO nie wiem czy to powinno byc, bo chyba nie powinnismy miec dostepu do pobierania tego obiektu
+        assertEquals(this.bankAccount.getCreditById(creditIdTemp).getAmount(), amount, 0.01);
+    }
+
+    @Test(expected = NegativeValueOfMoneyTransactionException.class)
+    public void takeCreditNegativeValue() throws NegativeValueOfMoneyTransactionException {
+        double amount = -5000.0;
+        String creditIdTemp = this.bankAccount.takeCredit(amount);
+    }
+
+    @Test
+    public void payOffDebt() throws Exception {
+        double depositOnAccount = 1000;
+        double amount = 500.0;
+        double percentage = BankAccount.InterestPercentage;
+
+        this.bankAccount.depositCash(depositOnAccount);
+        String creditIdTemp = this.bankAccount.takeCredit(amount);
+        this.bankAccount.payOffDebt(creditIdTemp, new Date());
+
+        //TODO nie wiem jak to zrobic aby sprawdzic czy mamy prawidlowa kwote
+//        assertEquals(this.bankAccount.getBalance(), depositOnAccount );
+    }
 
 
     @After

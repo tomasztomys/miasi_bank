@@ -34,7 +34,7 @@ public class DebitAccount implements IBankAccount {
         return bankAccount.closeInvestment(investmentID, closeTempDate);
     }
 
-    public String takeCredit(double amount) {
+    public String takeCredit(double amount) throws NegativeValueOfMoneyTransactionException {
         return bankAccount.takeCredit(amount);
     }
 

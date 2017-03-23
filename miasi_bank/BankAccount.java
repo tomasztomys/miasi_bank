@@ -13,6 +13,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
     private double Balance;
     private Set<Investment> InvestmentList;
     private Set<Credit> CreditList;
+    public static double InterestPercentage = 5.0;
 
     public BankAccount() {
         super();
@@ -38,6 +39,10 @@ public class BankAccount extends BankProduct implements IBankAccount {
 
     public Investment getInvestmentById(String id) throws NoSuchElementException {
         return this.InvestmentList.stream().filter(s -> s.getId().equals(id)).findFirst().get();
+    }
+
+    public Credit getCreditById(String id) throws NoSuchElementException {
+        return this.CreditList.stream().filter(s -> s.getId().equals(id)).findFirst().get();
     }
 
     public Set<Credit> getCreditList() {
@@ -110,16 +115,15 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
     }
 
-    public String takeCredit(double amount) {
-        if(amount <= 0) return null;
+    public String takeCredit(double amount) throws NegativeValueOfMoneyTransactionException {
+        this.validateAmount(amount);
 
-        this.Balance += amount;
-
-        Credit credit = new Credit(this, amount, new InterestManager(5));
-
+        Credit credit = new Credit(this, amount, new InterestManager(InterestPercentage));
         Operation operation = new Operation(OperationType.TAKE_CREDIT, this, credit, amount);
-        this.historyManager.addOperation(operation);
 
+        this.deposit(amount);
+
+        this.historyManager.addOperation(operation);
         this.CreditList.add(credit);
 
         return credit.getId();

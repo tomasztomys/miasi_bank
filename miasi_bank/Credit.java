@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit;
  * Created by TG & MM on 10.03.2017.
  */
 public class Credit extends BankProduct {
-    String id;
+    private String id;
     private Date createDate;
-    boolean isActive;
-    double amount;
-    InterestManager interestManager;
-    BankAccount bankAccount;
+    private boolean isActive;
+    private double amount;
+    private InterestManager interestManager;
+    private BankAccount bankAccount;
 
     public Credit(BankAccount bankAccount, double amount, InterestManager interestManager) {
         Date createDate = new Date();
@@ -32,6 +32,19 @@ public class Credit extends BankProduct {
 
     public String getId() {
         return this.id;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public double payOffDebt(Date closeTempDate) {

@@ -17,7 +17,7 @@ public interface IBankAccount {
 
     boolean closeInvestment(String investmentID, Date closeTempDate) ;
 
-    String takeCredit(double amount);
+    String takeCredit(double amount) throws NegativeValueOfMoneyTransactionException;
 
     boolean payOffDebt(String creditID, Date closeTempDate);
 
