@@ -1,7 +1,7 @@
 package tests;
 
-import miasi_bank.BankAccount;
-import miasi_bank.UserAccount;
+import miasi_bank_old.BankAccount;
+import miasi_bank_old.UserAccount;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

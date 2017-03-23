@@ -1,53 +1,194 @@
 package miasi_bank;
 
-import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import custom_exceptions.CustomException;
+import interests.Interest;
+import interests.LinearInterest;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Created by inf117182 on 10.03.2017.
+ * Created by Tomasz Gwoździk on 22.03.2017.
  */
 public class BankSystem {
-
     public static void main(String[] args) {
+        Interest interest1 = new LinearInterest(2.0);
+        Interest interest2 = new LinearInterest(4.0);
+
         Bank bank = new Bank();
-
-        UserAccount user1 = bank.addUserAccount("Tomek", "Zbyszek", "123");
-        System.out.println("-----------------------");
-        UserAccount user2 = bank.addUserAccount("Tomek", "KKK", "1er");
         System.out.println("-----------------------");
 
-        BankAccount user1bankAccount1 = bank.addBankAccount(user1);
-        System.out.println("-----------------------");
-        BankAccount user1bankAccount2 = bank.addBankAccount(user1);
-        System.out.println("-----------------------");
-        BankAccount user2bankAccount1 = bank.addBankAccount(user2);
-        System.out.println("-----------------------");
-
-        DebitAccount user1debitAccount1 = bank.addDebit(user1, user1bankAccount2, 5000.0);
-
-        System.out.println("-----------------------");
-        user1bankAccount1.depositCash(500.0);
-        System.out.println("-----------------------");
-
-        user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
-        System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
-        System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, 200.0);
-        System.out.println("-----------------------");
-
-        System.out.println("User 2 ma: " + user2bankAccount1.getBalance());
-        System.out.println("-----------------------");
-
+        String client1 = null;
         try {
-            user1bankAccount1.withdrawCash(800.0);
-        } catch (InsufficientBalanceException e) {
-
+            client1 = bank.addClient("Tomasz", "Gwoździk", "0");
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
-        try {
-            user1bankAccount1.withdrawCash(200.0);
-        } catch (InsufficientBalanceException e) {
 
+        String client1Copy = null;
+        try {
+            client1Copy = bank.addClient("Tomasz", "Gwoździk", "0");
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client2 = null;
+        try {
+            client2 = bank.addClient("Dariusz", "Paluch", "1");
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client1Account1 = bank.createAccount(client1, interest1);
+        System.out.println("-----------------------");
+
+        String client2Account1 = bank.createAccount(client2, 500.0, interest1);
+        System.out.println("-----------------------");
+
+        try {
+            bank.payment(client1, client1Account1, 200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.payment(client1, client1Account1, -200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.withdraw(client1, client1Account1, -200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.withdraw(client1, client1Account1, 200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.transfer(client1, client1Account1, client2Account1, 200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.transfer(client2, client2Account1, client1Account1, 200.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client1Account1PlacementCopy1 = null;
+        try {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+            Date date = format.parse("25.03.2017");
+            client1Account1PlacementCopy1 = bank.createPlacement(client1, client1Account1, -200.0, date, interest1);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client1Account1Placement1 = null;
+        try {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+            Date date = format.parse("25.03.2017");
+            client1Account1Placement1 = bank.createPlacement(client1, client1Account1, 200.0, date, interest1);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client1Account1Loan1 = null;
+        try {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+            Date date = format.parse("25.03.2017");
+            client1Account1Loan1 = bank.createLoan(client1, client1Account1, 1000.0, date, interest1);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.payment(client1, client1Account1, 500.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+            Date date = format.parse("25.03.2017");
+            bank.payOffLoan(client1, client1Account1, client1Account1Loan1, date);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+            Date date = format.parse("25.03.2017");
+            bank.closePlacement(client1, client1Account1, client1Account1Placement1, date);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.setDebitAccount(client1, client1Account1, 5000.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.setDebitAccount(client1, client1Account1, 5000.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.calculateAndAddInterestToAccount(client1, client1Account1);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.calculateAndAddInterestToAccounts();
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.changeInterest(client1, client1Account1, interest2);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
     }

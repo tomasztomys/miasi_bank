@@ -1,6 +1,6 @@
 package tests;
 
-import miasi_bank.*;
+import miasi_bank_old.*;
 import org.junit.*;
 
 import java.util.HashSet;

@@ -1,55 +1,68 @@
 package miasi_bank;
 
-import miasi_bank.custom_exceptions.InsufficientBalanceException;
-
-import java.util.*;
+import custom_exceptions.CustomException;
 
 /**
- * Created by TG & MM on 10.03.2017.
+ * Created by Tomasz Gwoździk on 23.03.2017.
  */
-public class DebitAccount implements IBankAccount {
-    BankAccount bankAccount = null;
-    Double debit;
-    Double maxDebit;
+public class DebitAccount extends Account {
+    private double debit;
+    private double maxDebit;
 
-    public DebitAccount(BankAccount bankAccount, Double maxDebit) {
-        this.bankAccount = bankAccount;
-        this.maxDebit = maxDebit;
+    DebitAccount(Account account, Operation operation) {
+        super(account);
+        super.getHistory().addOperation(operation);
+
+        this.maxDebit = operation.getAmount();
+        this.debit = operation.getAmount();
     }
 
-    public String getId() {
-        return bankAccount.getId();
+    @Override
+    public double getTotalBalance() {
+        return super.getBalance() + debit;
     }
 
-    public Double getBalance() {
-        return bankAccount.getBalance();
+    @Override
+    public double withdraw(Operation operation) throws CustomException {
+        if(operation.getAmount() <= 0) {
+            throw new CustomException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+        }
+
+        if(getBalance() + debit < operation.getAmount()) {
+            throw new CustomException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
+        }
+
+        double withdrawFromMain = getBalance() - operation.getAmount();
+
+        if(withdrawFromMain < 0) {
+            super.withdraw(getBalance());
+            debit -= -withdrawFromMain;
+        } else {
+            super.withdraw(getBalance());
+        }
+
+        getHistory().addOperation(new Operation(operation));
+
+        return getBalance() + debit;
     }
 
-    public String addInvestment(Double amount, Date closeDate) {
-        return bankAccount.addInvestment(amount, closeDate);
-    }
+    @Override
+    public double payment(Operation operation) throws CustomException {
+        if(operation.getAmount() <= 0) {
+            throw new CustomException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+        }
 
-    public boolean closeInvestment(String investmentID, Date closeTempDate) {
-        return bankAccount.closeInvestment(investmentID, closeTempDate);
-    }
+        double debetMissing = maxDebit - debit;
 
-    public String takeCredit(Double amount) {
-        return bankAccount.takeCredit(amount);
-    }
+        if(operation.getAmount() - debetMissing <= 0) {
+            debit += operation.getAmount();
+        } else {
+            debit += debetMissing;
+            super.payment(operation.getAmount() - debetMissing);
+        }
 
-    public boolean payOffDebt(String creditID, Date closeTempDate) {
-        return bankAccount.payOffDebt(creditID, closeTempDate);
-    }
+        getHistory().addOperation(new Operation(operation));
 
-    public void depositCash(Double amount) {
-        bankAccount.depositCash(amount);
-    }
-
-    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
-        return bankAccount.withdrawCash(amount);
-    }
-
-    public boolean makeTransfer(BankAccount destination, Double amount) {
-        return bankAccount.makeTransfer(destination, amount);
+        return getBalance() + debit;
     }
 }

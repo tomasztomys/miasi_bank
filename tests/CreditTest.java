@@ -1,8 +1,8 @@
 package tests;
 
-import miasi_bank.BankAccount;
-import miasi_bank.Credit;
-import miasi_bank.InterestManager;
+import miasi_bank_old.BankAccount;
+import miasi_bank_old.Credit;
+import miasi_bank_old.InterestManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
