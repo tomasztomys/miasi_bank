@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransaction;
 
 import java.util.*;
 
@@ -129,8 +130,10 @@ public class BankAccount extends BankProduct implements IBankAccount {
         this.Balance += amount;
     }
 
-    public void depositCash(Double amount) {
-        if(amount <= 0) return;
+    public void depositCash(Double amount) throws NegativeValueOfMoneyTransaction {
+        if(amount <= 0) {
+            throw new NegativeValueOfMoneyTransaction("Ujemna kwota w operacji deposit cash");
+        }
 
         deposit(amount);
 
@@ -140,10 +143,11 @@ public class BankAccount extends BankProduct implements IBankAccount {
         System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
     }
 
-    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
-        if(amount > this.Balance || amount <= 0) {
-            System.out.println("Błędna kwota przelewu lub brak środków na koncie");
+    public Double withdrawCash(Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        if(amount > this.Balance) {
             throw new InsufficientBalanceException();
+        }else if(amount <= 0) {
+            throw new NegativeValueOfMoneyTransaction();
         }
 
         this.Balance -= amount;
@@ -154,6 +158,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
 
         return amount;
+
     }
 
     public boolean makeTransfer(BankAccount destination, Double amount) {

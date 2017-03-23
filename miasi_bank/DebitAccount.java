@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransaction;
 
 import java.util.*;
 
@@ -41,11 +42,11 @@ public class DebitAccount implements IBankAccount {
         return bankAccount.payOffDebt(creditID, closeTempDate);
     }
 
-    public void depositCash(Double amount) {
+    public void depositCash(Double amount) throws NegativeValueOfMoneyTransaction {
         bankAccount.depositCash(amount);
     }
 
-    public Double withdrawCash(Double amount) throws InsufficientBalanceException {
+    public Double withdrawCash(Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
         return bankAccount.withdrawCash(amount);
     }
 
