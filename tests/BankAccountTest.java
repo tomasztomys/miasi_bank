@@ -5,13 +5,13 @@ import miasi_bank.BankAccount;
 import miasi_bank.Investment;
 import miasi_bank.UserAccount;
 import miasi_bank.custom_exceptions.InsufficientBalanceException;
-import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransaction;
+import miasi_bank.custom_exceptions.NegativeValueOfMoneyTransactionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -68,13 +68,13 @@ public class BankAccountTest {
         assertEquals(this.bankAccount.getBalance(), amount1 + amount2, 0);
     }
 
-    @Test(expected= NegativeValueOfMoneyTransaction.class)
-    public void depositCashNegativeValue() throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+    @Test(expected= NegativeValueOfMoneyTransactionException.class)
+    public void depositCashNegativeValue() throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
         this.bankAccount.depositCash(-500.0);
     }
 
-    @Test(expected= NegativeValueOfMoneyTransaction.class)
-    public void withdrawNegativeAmount() throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+    @Test(expected= NegativeValueOfMoneyTransactionException.class)
+    public void withdrawNegativeAmount() throws InsufficientBalanceException, NegativeValueOfMoneyTransactionException {
         this.bankAccount.withdrawCash(-500.0);
     }
     @Test
@@ -103,7 +103,7 @@ public class BankAccountTest {
     }
 
     @Test
-    public void makeTransfer() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+    public void makeTransfer() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
         double depositAmount = 500.00;
@@ -116,7 +116,7 @@ public class BankAccountTest {
     }
 
     @Test(expected = InsufficientBalanceException.class)
-    public void makeTransferMoreOfBalance() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+    public void makeTransferMoreOfBalance() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
         double depositAmount = 500.00;
@@ -126,8 +126,8 @@ public class BankAccountTest {
         this.bankAccount.makeTransfer(bankAccountTemp, transferAmount);
     }
 
-    @Test(expected = NegativeValueOfMoneyTransaction.class)
-    public void makeTransferNegativeValue() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+    @Test(expected = NegativeValueOfMoneyTransactionException.class)
+    public void makeTransferNegativeValue() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
         double depositAmount = 500.00;
@@ -138,7 +138,7 @@ public class BankAccountTest {
     }
 
     @Test
-    public void addInvestment() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+    public void addInvestment() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
         double amount = 500.00;
         double investmentAmount = 200.00;
         this.bankAccount.depositCash(amount);
@@ -150,7 +150,7 @@ public class BankAccountTest {
     }
 
     @Test
-    public void getInvestmentById() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+    public void getInvestmentById() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
         double amount = 500.00;
         double investmentAmount = 200.00;
         this.bankAccount.depositCash(amount);
@@ -158,6 +158,16 @@ public class BankAccountTest {
 
         Investment investmentTemp = this.bankAccount.getInvestmentById(investmentIdTemp);
         assertEquals(investmentTemp.getId(), investmentIdTemp);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void getWrongInvestmentId() throws NegativeValueOfMoneyTransactionException, InsufficientBalanceException {
+        double amount = 500.00;
+        double investmentAmount = 200.00;
+        this.bankAccount.depositCash(amount);
+        String investmentIdTemp = this.bankAccount.addInvestment(investmentAmount, new Date(2018, 5, 15));
+
+        Investment investmentTemp = this.bankAccount.getInvestmentById("TEST");
     }
 
 

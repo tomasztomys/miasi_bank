@@ -1,11 +1,11 @@
 package miasi_bank.custom_exceptions;
 
-public class NegativeValueOfMoneyTransaction extends Exception {
-    public NegativeValueOfMoneyTransaction() {
+public class WrongIdException extends Exception {
+    public WrongIdException() {
         super("Wyjątek: Ujemna kwota operacji pieniężnej");
     }
 
-    public NegativeValueOfMoneyTransaction(String message) {
+    public WrongIdException(String message) {
         super(message);
         System.out.println("Wyjątek: " + message);
     }
