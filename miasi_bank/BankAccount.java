@@ -161,10 +161,11 @@ public class BankAccount extends BankProduct implements IBankAccount {
 
     }
 
-    public boolean makeTransfer(BankAccount destination, Double amount) {
-        if(amount > this.Balance || amount <= 0) {
-            System.out.println("Błędna kwota przelewu");
-            return false;
+    public boolean makeTransfer(BankAccount destination, Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        if(amount > this.Balance) {
+            throw new InsufficientBalanceException();
+        }else if(amount <= 0) {
+            throw new NegativeValueOfMoneyTransaction();
         }
 
         destination.deposit(amount);

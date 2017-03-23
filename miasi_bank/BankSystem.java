@@ -33,11 +33,29 @@ public class BankSystem {
         }
         System.out.println("-----------------------");
 
-        user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, 800.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransaction negativeValueOfMoneyTransaction) {
+            negativeValueOfMoneyTransaction.printStackTrace();
+        }
         System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, -800.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransaction negativeValueOfMoneyTransaction) {
+            negativeValueOfMoneyTransaction.printStackTrace();
+        }
         System.out.println("-----------------------");
-        user1bankAccount1.makeTransfer(user2bankAccount1, 200.0);
+        try {
+            user1bankAccount1.makeTransfer(user2bankAccount1, 200.0);
+        } catch (InsufficientBalanceException e) {
+            e.printStackTrace();
+        } catch (NegativeValueOfMoneyTransaction negativeValueOfMoneyTransaction) {
+            negativeValueOfMoneyTransaction.printStackTrace();
+        }
         System.out.println("-----------------------");
 
         System.out.println("User 2 ma: " + user2bankAccount1.getBalance());

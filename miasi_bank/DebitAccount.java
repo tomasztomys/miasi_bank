@@ -50,7 +50,7 @@ public class DebitAccount implements IBankAccount {
         return bankAccount.withdrawCash(amount);
     }
 
-    public boolean makeTransfer(BankAccount destination, Double amount) {
+    public boolean makeTransfer(BankAccount destination, Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
         return bankAccount.makeTransfer(destination, amount);
     }
 }

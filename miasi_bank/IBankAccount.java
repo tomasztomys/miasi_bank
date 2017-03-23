@@ -26,5 +26,5 @@ public interface IBankAccount {
 
     Double withdrawCash(Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
 
-    boolean makeTransfer(BankAccount destination, Double amount);
+    boolean makeTransfer(BankAccount destination, Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
 }
