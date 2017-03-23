@@ -12,19 +12,19 @@ import java.util.Date;
 public interface IBankAccount {
     String getId();
 
-    Double getBalance();
+    double getBalance();
 
-    String addInvestment(Double amount, Date closeDate);
+    String addInvestment(double amount, Date closeDate);
 
     boolean closeInvestment(String investmentID, Date closeTempDate) ;
 
-    String takeCredit(Double amount);
+    String takeCredit(double amount);
 
     boolean payOffDebt(String creditID, Date closeTempDate);
 
-    void depositCash(Double amount) throws NegativeValueOfMoneyTransaction;
+    void depositCash(double amount) throws NegativeValueOfMoneyTransaction;
 
-    Double withdrawCash(Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
+    double withdrawCash(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
 
-    boolean makeTransfer(BankAccount destination, Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
+    boolean makeTransfer(BankAccount destination, double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction;
 }

@@ -48,18 +48,18 @@ public class BankAccountTest {
 
     @Test
     public void getBalanceAfterDeposit() throws Exception {
-        Double amount1 = 100.00;
+        double amount1 = 100.00;
         this.bankAccount.depositCash(amount1);
         assertEquals(this.bankAccount.getBalance(), amount1, 0.01);
     }
 
     @Test
     public void depositCash() throws Exception {
-        Double amount1 = 100.00;
+        double amount1 = 100.00;
         this.bankAccount.depositCash(amount1);
         assertEquals(this.bankAccount.getBalance(), amount1, 0);
 
-        Double amount2 = 50.00;
+        double amount2 = 50.00;
         this.bankAccount.depositCash(amount2);
         assertEquals(this.bankAccount.getBalance(), amount1 + amount2, 0);
     }
@@ -75,8 +75,8 @@ public class BankAccountTest {
     }
     @Test
     public void withdrawCash() throws Exception {
-        Double amount1 = 100.00;
-        Double withdrawAmount = 50.00;
+        double amount1 = 100.00;
+        double withdrawAmount = 50.00;
         this.bankAccount.depositCash(amount1);
         this.bankAccount.withdrawCash(withdrawAmount);
         assertEquals(this.bankAccount.getBalance(), amount1 - withdrawAmount, 0.01  );
@@ -84,7 +84,7 @@ public class BankAccountTest {
 
     @Test
     public void withdrawAllCash() throws Exception {
-        Double amount1 = 100.00;
+        double amount1 = 100.00;
         this.bankAccount.depositCash(amount1);
         this.bankAccount.withdrawCash(amount1);
         assertEquals(this.bankAccount.getBalance(), 0, 0.01  );
@@ -92,8 +92,8 @@ public class BankAccountTest {
 
     @Test(expected= InsufficientBalanceException.class)
     public void withdrawCrashMoreOfBalance() throws Exception {
-        Double amount1 = 100.00;
-        Double withdrawAmount = 500.00;
+        double amount1 = 100.00;
+        double withdrawAmount = 500.00;
         this.bankAccount.depositCash(amount1);
         this.bankAccount.withdrawCash(withdrawAmount);
     }
@@ -102,8 +102,8 @@ public class BankAccountTest {
     public void makeTransfer() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
-        Double depositAmount = 500.00;
-        Double transferAmount = 200.00;
+        double depositAmount = 500.00;
+        double transferAmount = 200.00;
         this.bankAccount.depositCash(depositAmount);
 
         this.bankAccount.makeTransfer(bankAccountTemp, transferAmount);
@@ -115,8 +115,8 @@ public class BankAccountTest {
     public void makeTransferMoreOfBalance() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
-        Double depositAmount = 500.00;
-        Double transferAmount = 700.00;
+        double depositAmount = 500.00;
+        double transferAmount = 700.00;
         this.bankAccount.depositCash(depositAmount);
 
         this.bankAccount.makeTransfer(bankAccountTemp, transferAmount);
@@ -126,8 +126,8 @@ public class BankAccountTest {
     public void makeTransferNegativeValue() throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
         UserAccount userAccountTemp = this.bank.addUserAccount("Test", "test", "98052007457");
         BankAccount bankAccountTemp = this.bank.addBankAccount(userAccountTemp);
-        Double depositAmount = 500.00;
-        Double transferAmount = -700.00;
+        double depositAmount = 500.00;
+        double transferAmount = -700.00;
         this.bankAccount.depositCash(depositAmount);
 
         this.bankAccount.makeTransfer(bankAccountTemp, transferAmount);

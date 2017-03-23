@@ -13,9 +13,9 @@ public class Operation {
     BankProduct source;
     BankProduct destination;
     Date date;
-    Double amount;
+    double amount;
 
-    public Operation(OperationType type, BankProduct source, BankProduct destination, Double amount){
+    public Operation(OperationType type, BankProduct source, BankProduct destination, double amount){
         this.id = new BigInteger(130, new SecureRandom()).toString(32);
         this.type = type;
         this.source = source;

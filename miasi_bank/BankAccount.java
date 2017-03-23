@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class BankAccount extends BankProduct implements IBankAccount {
     private String Id;
-    private Double Balance;
+    private double Balance;
     private Set<Investment> InvestmentList;
     private Set<Credit> CreditList;
 
@@ -28,7 +28,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return Id;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return Balance;
     }
 
@@ -40,7 +40,34 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return CreditList;
     }
 
-    public String addInvestment(Double amount, Date closeDate) {
+    private void validateAmount(double amount) throws NegativeValueOfMoneyTransaction {
+        if(amount <= 0) {
+            throw new NegativeValueOfMoneyTransaction();
+        }
+    }
+
+    private void checkSufficientAmountInBalance(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        this.validateAmount(amount);
+        if(amount > this.Balance) {
+            throw new InsufficientBalanceException();
+        }
+    }
+
+    private void deposit(double amount) throws NegativeValueOfMoneyTransaction {
+        this.validateAmount(amount);
+
+        this.Balance += amount;
+    }
+
+    private void withdraw(double amount) throws NegativeValueOfMoneyTransaction, InsufficientBalanceException {
+        this.validateAmount(amount);
+        this.checkSufficientAmountInBalance(amount);
+
+        this.Balance -=amount;
+
+    }
+
+    public String addInvestment(double amount, Date closeDate) {
         if(this.Balance < amount) {
             return null;
         }
@@ -65,7 +92,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
 
         if(investment != null) {
-            Double amount = investment.closeInvestment(closeTempDate);
+            double amount = investment.closeInvestment(closeTempDate);
             this.Balance += amount;
 
             if(amount > investment.getDeposit()) {
@@ -84,7 +111,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
     }
 
-    public String takeCredit(Double amount) {
+    public String takeCredit(double amount) {
         if(amount <= 0) return null;
 
         this.Balance += amount;
@@ -107,7 +134,7 @@ public class BankAccount extends BankProduct implements IBankAccount {
         }
 
         if(credit != null) {
-            Double amount = credit.payOffDebt(closeTempDate);
+            double amount = credit.payOffDebt(closeTempDate);
 
             if(this.Balance >= amount && amount > 0) {
                 this.Balance -= amount;
@@ -124,58 +151,35 @@ public class BankAccount extends BankProduct implements IBankAccount {
         return false;
     }
 
-    private void deposit(Double amount) {
-        if(amount <= 0) return;
-
-        this.Balance += amount;
-    }
-
-    public void depositCash(Double amount) throws NegativeValueOfMoneyTransaction {
-        if(amount <= 0) {
-            throw new NegativeValueOfMoneyTransaction("Ujemna kwota w operacji deposit cash");
-        }
-
+    public void depositCash(double amount) throws NegativeValueOfMoneyTransaction {
         deposit(amount);
-
         Operation operation = new Operation(OperationType.DEPOSIT, null, this, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
+//
+//        System.out.println("Dodano " + amount + " do konta " + this.getId() + " Razem: " + this.getBalance());
     }
 
-    public Double withdrawCash(Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
-        if(amount > this.Balance) {
-            throw new InsufficientBalanceException();
-        }else if(amount <= 0) {
-            throw new NegativeValueOfMoneyTransaction();
-        }
-
-        this.Balance -= amount;
-
+    public double withdrawCash(double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        this.withdraw(amount);
         Operation operation = new Operation(OperationType.WITHDRAW, this, null, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
-
+//
+//        System.out.println("Wypłacono: " + amount + " z konta " + this.getId());
+//
         return amount;
 
     }
 
-    public boolean makeTransfer(BankAccount destination, Double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
-        if(amount > this.Balance) {
-            throw new InsufficientBalanceException();
-        }else if(amount <= 0) {
-            throw new NegativeValueOfMoneyTransaction();
-        }
-
+    public boolean makeTransfer(BankAccount destination, double amount) throws InsufficientBalanceException, NegativeValueOfMoneyTransaction {
+        this.withdraw(amount);
         destination.deposit(amount);
-        this.Balance -= amount;
-
         Operation operation = new Operation(OperationType.TRANSFER, this, destination, amount);
         this.historyManager.addOperation(operation);
-
-        System.out.println("Wykonano przelew: " + amount + " do konta " + destination.getId() + " z konta: " + this.getId() + " Razem: " + this.getBalance());
+//
+//        System.out.println("Wykonano przelew: " + amount + " do konta " + destination.getId() + " z konta: " + this.getId() + " Razem: " + this.getBalance());
 
         return true;
     }
+
+
 }
