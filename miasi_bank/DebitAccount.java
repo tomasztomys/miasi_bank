@@ -1,6 +1,7 @@
 package miasi_bank;
 
-import custom_exceptions.CustomException;
+import custom_exceptions.NoResourcesException;
+import custom_exceptions.WrongValueException;
 
 /**
  * Created by Tomasz Gwoździk on 23.03.2017.
@@ -23,13 +24,13 @@ public class DebitAccount extends Account {
     }
 
     @Override
-    public double withdraw(Operation operation) throws CustomException {
+    public double withdraw(Operation operation) throws NoResourcesException, WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
         }
 
         if(getBalance() + debit < operation.getAmount()) {
-            throw new CustomException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
+            throw new WrongValueException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
         }
 
         double withdrawFromMain = getBalance() - operation.getAmount();
@@ -47,9 +48,9 @@ public class DebitAccount extends Account {
     }
 
     @Override
-    public double payment(Operation operation) throws CustomException {
+    public double payment(Operation operation) throws WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
         }
 
         double debetMissing = maxDebit - debit;

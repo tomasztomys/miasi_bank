@@ -1,6 +1,6 @@
 package miasi_bank;
 
-import custom_exceptions.CustomException;
+import custom_exceptions.ProductIsAlreadyClosedException;
 import interests.Interest;
 
 import java.util.Date;
@@ -19,8 +19,8 @@ public class Placement extends Product {
         this.closingDate = closingDate;
     }
 
-    public double close(Date date) throws CustomException {
-        if(!isActive) throw new CustomException("Lokata " + getID() + " została już zamknięta");
+    public double close(Date date) throws ProductIsAlreadyClosedException {
+        if(!isActive) throw new ProductIsAlreadyClosedException("Lokata " + getID() + " została już zamknięta");
 
         this.isActive = false;
         if(date.equals(closingDate) || date.after(closingDate)) {

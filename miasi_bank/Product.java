@@ -1,6 +1,7 @@
 package miasi_bank;
 
-import custom_exceptions.CustomException;
+import custom_exceptions.NoResourcesException;
+import custom_exceptions.WrongValueException;
 import interests.Interest;
 
 import java.util.Date;
@@ -51,9 +52,9 @@ public class Product {
         history.addOperation(new Operation(operation));
     }
 
-    public double payment(double amount) throws CustomException {
+    public double payment(double amount) throws WrongValueException {
         if(amount <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wpłaty " + clientID + " (" + id + ") Wpłata: " + amount);
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + clientID + " (" + id + ") Wpłata: " + amount);
         }
 
         balance += amount;
@@ -61,9 +62,9 @@ public class Product {
         return balance;
     }
 
-    public double payment(Operation operation) throws CustomException {
+    public double payment(Operation operation) throws WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wpłaty " + clientID + " (" + id + ") Wpłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + clientID + " (" + id + ") Wpłata: " + operation.getAmount());
         }
 
         balance += operation.getAmount();
@@ -73,13 +74,13 @@ public class Product {
         return balance;
     }
 
-    public double withdraw(double amount) throws CustomException {
+    public double withdraw(double amount) throws NoResourcesException, WrongValueException {
         if(amount <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wypłaty " + clientID + " (" + id + ") Wypłata: " + amount);
+            throw new WrongValueException("Nieprawidłowa wartość wypłaty " + clientID + " (" + id + ") Wypłata: " + amount);
         }
 
         if(balance < amount) {
-            throw new CustomException("Nie masz tyle pieniędzy na koncie (clientID: " + clientID + ")");
+            throw new NoResourcesException("Nie masz tyle pieniędzy na koncie (clientID: " + clientID + ")");
         }
 
         balance -= amount;
@@ -87,13 +88,13 @@ public class Product {
         return balance;
     }
 
-    public double withdraw(Operation operation) throws CustomException {
+    public double withdraw(Operation operation) throws NoResourcesException, WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new CustomException("Nieprawidłowa wartość wypłaty " + clientID + " (" + id + ") Wypłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wypłaty " + clientID + " (" + id + ") Wypłata: " + operation.getAmount());
         }
 
         if(balance < operation.getAmount()) {
-            throw new CustomException("Nie masz tyle pieniędzy na koncie (clientID: " + clientID + ")");
+            throw new NoResourcesException("Nie masz tyle pieniędzy na koncie (clientID: " + clientID + ")");
         }
 
         balance -= operation.getAmount();

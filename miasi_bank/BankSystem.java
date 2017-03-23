@@ -1,6 +1,6 @@
 package miasi_bank;
 
-import custom_exceptions.CustomException;
+import custom_exceptions.*;
 import interests.Interest;
 import interests.LinearInterest;
 
@@ -23,7 +23,7 @@ public class BankSystem {
         String client1 = null;
         try {
             client1 = bank.addClient("Tomasz", "Gwoździk", "0");
-        } catch (CustomException e) {
+        } catch (ClientAlreadyExistException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -31,7 +31,7 @@ public class BankSystem {
         String client1Copy = null;
         try {
             client1Copy = bank.addClient("Tomasz", "Gwoździk", "0");
-        } catch (CustomException e) {
+        } catch (ClientAlreadyExistException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -39,7 +39,7 @@ public class BankSystem {
         String client2 = null;
         try {
             client2 = bank.addClient("Dariusz", "Paluch", "1");
-        } catch (CustomException e) {
+        } catch (ClientAlreadyExistException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -52,42 +52,62 @@ public class BankSystem {
 
         try {
             bank.payment(client1, client1Account1, 200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.payment(client1, client1Account1, -200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.withdraw(client1, client1Account1, -200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.withdraw(client1, client1Account1, 200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.transfer(client1, client1Account1, client2Account1, 200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.transfer(client2, client2Account1, client1Account1, 200.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -97,9 +117,13 @@ public class BankSystem {
             DateFormat format = new SimpleDateFormat("dd.MM.yyy");
             Date date = format.parse("25.03.2017");
             client1Account1PlacementCopy1 = bank.createPlacement(client1, client1Account1, -200.0, date, interest1);
-        } catch (CustomException e) {
-            System.out.println(e.getMessage());
         } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -109,9 +133,13 @@ public class BankSystem {
             DateFormat format = new SimpleDateFormat("dd.MM.yyy");
             Date date = format.parse("25.03.2017");
             client1Account1Placement1 = bank.createPlacement(client1, client1Account1, 200.0, date, interest1);
-        } catch (CustomException e) {
-            System.out.println(e.getMessage());
         } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -121,16 +149,20 @@ public class BankSystem {
             DateFormat format = new SimpleDateFormat("dd.MM.yyy");
             Date date = format.parse("25.03.2017");
             client1Account1Loan1 = bank.createLoan(client1, client1Account1, 1000.0, date, interest1);
-        } catch (CustomException e) {
-            System.out.println(e.getMessage());
         } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.payment(client1, client1Account1, 500.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -139,9 +171,17 @@ public class BankSystem {
             DateFormat format = new SimpleDateFormat("dd.MM.yyy");
             Date date = format.parse("25.03.2017");
             bank.payOffLoan(client1, client1Account1, client1Account1Loan1, date);
-        } catch (CustomException e) {
-            System.out.println(e.getMessage());
         } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesToPayOffLoanExeption noResourcesToPayOffLoanExeption) {
+            noResourcesToPayOffLoanExeption.printStackTrace();
+        } catch (WrongValueException e) {
+            System.out.println(e.getMessage());
+        } catch (ProductIsAlreadyClosedException e) {
+            System.out.println(e.getMessage());
+        } catch (NoResourcesException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -150,16 +190,13 @@ public class BankSystem {
             DateFormat format = new SimpleDateFormat("dd.MM.yyy");
             Date date = format.parse("25.03.2017");
             bank.closePlacement(client1, client1Account1, client1Account1Placement1, date);
-        } catch (CustomException e) {
-            System.out.println(e.getMessage());
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-        }
-        System.out.println("-----------------------");
-
-        try {
-            bank.setDebitAccount(client1, client1Account1, 5000.0);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
+            System.out.println(e.getMessage());
+        } catch (ProductIsAlreadyClosedException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
@@ -167,20 +204,33 @@ public class BankSystem {
         try {
             bank.setDebitAccount(client1, client1Account1, 5000.0);
         } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        try {
+            bank.setDebitAccount(client1, client1Account1, 5000.0);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
+        } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.calculateAndAddInterestToAccount(client1, client1Account1);
-        } catch (CustomException e) {
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
         try {
             bank.calculateAndAddInterestToAccounts();
-        } catch (CustomException e) {
+        } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");

@@ -1,6 +1,6 @@
 package miasi_bank;
 
-import custom_exceptions.CustomException;
+import custom_exceptions.*;
 import interests.Interest;
 
 import java.util.Date;
@@ -31,14 +31,14 @@ public class Bank {
         return history;
     }
 
-    public String addClient(String name, String surname, String pesel) throws CustomException {
+    public String addClient(String name, String surname, String pesel) throws ClientAlreadyExistException {
         boolean isOnList = false;
         for (Client client: clients) {
             if(client.getPesel() == pesel) isOnList = true;
         }
 
         if(isOnList) {
-            throw new CustomException("Klient o podanym PESELU ma już konto w tym banku!");
+            throw new ClientAlreadyExistException("Klient o podanym PESELU ma już konto w tym banku!");
         }
 
         Client client = new Client(name, surname, pesel);
@@ -64,14 +64,14 @@ public class Bank {
         return account.getID();
     }
 
-    public double payment(String clientID, String accountID, double amount) throws CustomException {
+    public double payment(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można zrealizować wpłaty, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować wpłaty, klient lub konto nie istanieje w Banku!");
         }
 
         Operation operation = new Operation(OperationType.PAYMENT, clientID, amount, null, accountID);
@@ -83,14 +83,14 @@ public class Bank {
         return balance;
     }
 
-    public double withdraw(String clientID, String accountID, double amount) throws CustomException {
+    public double withdraw(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można zrealizować wypłaty, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować wypłaty, klient lub konto nie istanieje w Banku!");
         }
 
         Operation operation = new Operation(OperationType.WITHDRAW, clientID, amount, accountID, null);
@@ -102,7 +102,7 @@ public class Bank {
         return balance;
     }
 
-    public double transfer(String clientID, String accountFromID, String accountToID, double amount) throws CustomException {
+    public double transfer(String clientID, String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account accountFrom = null;
         Account accountTo = null;
         for (Account acc: accounts) {
@@ -111,11 +111,11 @@ public class Bank {
         }
 
         if(accountFrom == null) {
-            throw new CustomException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
         }
 
         if(accountTo == null) {
-            throw new CustomException("Nie można zrealizować przelewu, konto na które mają zostac przelane pieniądze nie istnieje nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, konto na które mają zostac przelane pieniądze nie istnieje nie istanieje w Banku!");
         }
 
         Operation operation = new Operation(OperationType.TRANSFER, clientID, amount, accountFromID, accountToID);
@@ -129,14 +129,14 @@ public class Bank {
         return balance;
     }
 
-    public String createPlacement(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws CustomException {
+    public String createPlacement(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można stworzyć lokaty, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można stworzyć lokaty, klient lub konto nie istanieje w Banku!");
         }
 
         Placement placement = new Placement(clientID, amount, closingDate, interest);
@@ -150,14 +150,14 @@ public class Bank {
         return placement.getID();
     }
 
-    public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws CustomException {
+    public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws ClientOrProductDoesNotExistException, ProductIsAlreadyClosedException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można zamknąć lokaty, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zamknąć lokaty, klient lub konto nie istanieje w Banku!");
         }
 
         Placement placement = null;
@@ -166,7 +166,7 @@ public class Bank {
         }
 
         if(placement == null) {
-            throw new CustomException("Nie można zamknąć lokaty, lokata nie istnieje!");
+            throw new ClientOrProductDoesNotExistException("Nie można zamknąć lokaty, lokata nie istnieje!");
         }
 
         Operation operation = new Operation(OperationType.CLOSE_PLACEMENT, clientID, placement.close(closingDate), placementID, accountID);
@@ -178,14 +178,14 @@ public class Bank {
         return balance;
     }
 
-    public String createLoan(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws CustomException {
+    public String createLoan(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można zrealizować wypłaty, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować wypłaty, klient lub konto nie istanieje w Banku!");
         }
 
         Loan loan = new Loan(clientID, amount, closingDate, interest);
@@ -200,14 +200,14 @@ public class Bank {
         return loan.getID();
     }
 
-    public double payOffLoan(String clientID, String accountID, String loanID, Date closingDate) throws CustomException {
+    public double payOffLoan(String clientID, String accountID, String loanID, Date closingDate) throws ClientOrProductDoesNotExistException, NoResourcesToPayOffLoanExeption, NoResourcesException, WrongValueException, ProductIsAlreadyClosedException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
         }
 
         Loan loan = null;
@@ -216,13 +216,13 @@ public class Bank {
         }
 
         if(loan == null) {
-            throw new CustomException("Nie można spłacic kredytu, kredyt nie istnieje!");
+            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, kredyt nie istnieje!");
         }
 
         double interest = loan.getInterest(closingDate);
 
         if(account.getBalance() < loan.getBalance() + interest) {
-            throw new CustomException("Nie masz wystarczających środków aby spłacić kredyt!");
+            throw new NoResourcesToPayOffLoanExeption("Nie masz wystarczających środków aby spłacić kredyt!");
         }
 
         Operation operation = new Operation(OperationType.PAY_OFF_LOAN, clientID, loan.close(closingDate), accountID, loan.getID());
@@ -233,18 +233,18 @@ public class Bank {
         return balance;
     }
 
-    public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws CustomException {
+    public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws CustomException, ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można utworzyć konta debetowego, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można utworzyć konta debetowego, klient lub konto nie istanieje w Banku!");
         }
 
         if(account instanceof DebitAccount) {
-            throw new CustomException("Nie można utworzyć konta debetowego, z konta, które ma już założony debet!");
+            throw new ClientOrProductDoesNotExistException("Nie można utworzyć konta debetowego, z konta, które ma już założony debet!");
         }
 
         Operation operation = new Operation(OperationType.CREATE_DEBIT, clientID, maxDebit, accountID, null);
@@ -257,7 +257,7 @@ public class Bank {
         return accounts.add(debitAccount);
     }
 
-    public void calculateAndAddInterestToAccounts() throws CustomException {
+    public void calculateAndAddInterestToAccounts() throws WrongValueException {
         for (Account acc: accounts) {
            double interest = acc.calculateInterest();
            Operation operation = new Operation(OperationType.CALCULATE_INTEREST, acc.getClientID(), interest, acc.getID(), null);
@@ -269,14 +269,14 @@ public class Bank {
         System.out.println("Naliczono odsetki dla wszystkich kont");
     }
 
-    public double calculateAndAddInterestToAccount(String clientID, String accountID) throws CustomException {
+    public double calculateAndAddInterestToAccount(String clientID, String accountID) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
         }
 
         if(account == null) {
-            throw new CustomException("Nie można utworzyć konta debetowego, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Nie można utworzyć konta debetowego, klient lub konto nie istanieje w Banku!");
         }
 
         double interest = account.calculateInterest();
