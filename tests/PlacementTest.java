@@ -2,7 +2,7 @@ package tests;
 
 import custom_exceptions.ProductIsAlreadyClosedException;
 import interests.Interest;
-import miasi_bank.Loan;
+import miasi_bank.Placement;
 import miasi_bank.UniqueID;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +16,10 @@ import static org.junit.Assert.*;
 /**
  * Created by Tomasz Gwoździk on 24.03.2017.
  */
-public class LoanTest {
+public class PlacementTest {
     private String clientID;
     private Interest interest;
-    private Loan loan;
+    private Placement placement;
 
     @Before
     public void setUp() throws Exception {
@@ -39,32 +39,31 @@ public class LoanTest {
 
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
         Date date = format.parse("25.04.2017");
-        loan = new Loan(clientID, 1000.0, date, interest);
+        placement = new Placement(clientID, 1000.0, date, interest);
     }
 
     @Test
-    public void getClientID() {
-        assertEquals(clientID, loan.getClientID());
-    }
-
-    @Test
-    public void getInterest() throws Exception {
+    public void closeEqualEndDate() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
         Date date = format.parse("25.04.2017");
 
-        Double interest = loan.getInterest(date);
-
-        assertEquals(20.0, interest, 0);
+        assertEquals(1020.0, placement.close(date), 0);
     }
 
     @Test
-    public void close() throws Exception {
+    public void closeAfterEndDate() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("30.04.2017");
 
-        double payOff = loan.close(date);
+        assertEquals(1020.0, placement.close(date), 0);
+    }
 
-        assertEquals(1020.0, payOff, 0);
+    @Test
+    public void closeBeforeEndDate() throws Exception {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+        Date date = format.parse("22.04.2017");
+
+        assertEquals(1000.0, placement.close(date), 0);
     }
 
     @Test (expected = ProductIsAlreadyClosedException.class)
@@ -72,7 +71,7 @@ public class LoanTest {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
         Date date = format.parse("25.04.2017");
 
-        loan.close(date);
-        loan.close(date);
+        placement.close(date);
+        placement.close(date);
     }
 }

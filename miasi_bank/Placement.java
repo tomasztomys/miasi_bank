@@ -13,7 +13,7 @@ public class Placement extends Product {
     private Date closingDate;
     private boolean isActive;
 
-    Placement(String clientID, double startBalance, Date closingDate, Interest interest) throws WrongValueException {
+    public Placement(String clientID, double startBalance, Date closingDate, Interest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
 
         this.isActive = true;
