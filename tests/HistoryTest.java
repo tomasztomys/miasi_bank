@@ -40,7 +40,6 @@ public class HistoryTest {
 
         Iterator<Operation> iterator = history.getHistory().iterator();
 
-
         assertEquals("PAYMENT", iterator.next().getType().name());
     }
 

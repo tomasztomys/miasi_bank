@@ -1,6 +1,7 @@
 package tests;
 
 import interests.Interest;
+import junit.framework.TestCase;
 import miasi_bank.Account;
 import miasi_bank.Product;
 import miasi_bank.UniqueID;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Tomasz Gwoździk on 24.03.2017.
  */
-public class AccountTest {
+public class AccountTest extends TestCase {
     private Product product;
     private Interest interest;
     private Account accountProductRef;

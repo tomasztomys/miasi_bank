@@ -31,6 +31,35 @@ public class Bank {
         return history;
     }
 
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public Set<Placement> getPlacements() {
+        return placements;
+    }
+
+    public Set<Loan> getLoans() {
+        return loans;
+    }
+
+    public double getAccountBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
+        Account account = null;
+        for (Account acc: accounts) {
+            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+        }
+
+        if(account == null) {
+            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+        }
+
+        return account.getTotalBalance();
+    }
+
     public String addClient(String name, String surname, String pesel) throws ClientAlreadyExistException {
         boolean isOnList = false;
         for (Client client: clients) {
@@ -48,7 +77,16 @@ public class Bank {
         return client.getId();
     }
 
-    public String createAccount(String clientID, Interest interest) {
+    public String createAccount(String clientID, Interest interest) throws ClientOrProductDoesNotExistException {
+        Client client = null;
+        for (Client c: clients) {
+            if(c.getId() == clientID) client = c;
+        }
+
+        if(client == null) {
+            throw new ClientOrProductDoesNotExistException("KLient nie ma jeszcze konta w banku. Nie można otworzyć konta!");
+        }
+
         Account account = new Account(clientID, interest);
         accounts.add(account);
 
@@ -56,7 +94,16 @@ public class Bank {
         return account.getID();
     }
 
-    public String createAccount(String clientID, double startBalance, Interest interest) throws WrongValueException {
+    public String createAccount(String clientID, double startBalance, Interest interest) throws WrongValueException, ClientOrProductDoesNotExistException {
+        Client client = null;
+        for (Client c: clients) {
+            if(c.getId() == clientID) client = c;
+        }
+
+        if(client == null) {
+            throw new ClientOrProductDoesNotExistException("Klient nie ma jeszcze konta w banku. Nie można otworzyć konta!");
+        }
+
         Account account = new Account(clientID, startBalance, interest);
         accounts.add(account);
 
