@@ -6,15 +6,15 @@ import interests.Interest;
  * Created by Tomasz Gwoździk on 22.03.2017.
  */
 public class Account extends Product {
-    Account(Product account) {
+    public Account(Product account) {
         super(account);
     }
 
-    Account(String clientID, double startBalance, Interest interest) {
+    public Account(String clientID, double startBalance, Interest interest) {
         super(clientID, startBalance, interest);
     }
 
-    Account(String clientID, Interest interest) {
+    public Account(String clientID, Interest interest) {
         super(clientID, interest);
     }
 

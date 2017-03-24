@@ -6,11 +6,11 @@ import java.util.Date;
  * Created by Tomasz Gwoździk on 22.03.2017.
  */
 public class Client {
-    String id;
-    String name;
-    String surname;
-    String pesel;
-    Date creationDate;
+    private String id;
+    private String name;
+    private String surname;
+    private String pesel;
+    private Date creationDate;
 
     public Client(String name, String surname, String pesel) {
         this.id = UniqueID.generate();

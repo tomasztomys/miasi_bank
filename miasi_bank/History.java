@@ -16,4 +16,5 @@ public class History {
     public void addOperation(Operation operation) {
         operations.add(operation);
     }
+    public Set getHistory() { return operations; }
 }
