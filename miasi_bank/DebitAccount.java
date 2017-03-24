@@ -10,7 +10,7 @@ public class DebitAccount extends Account {
     private double debit;
     private double maxDebit;
 
-    DebitAccount(Account account, Operation operation) {
+    public DebitAccount(Account account, Operation operation) {
         super(account);
         super.getHistory().addOperation(operation);
 
@@ -30,7 +30,7 @@ public class DebitAccount extends Account {
         }
 
         if(getBalance() + debit < operation.getAmount()) {
-            throw new WrongValueException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
+            throw new NoResourcesException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
         }
 
         double withdrawFromMain = getBalance() - operation.getAmount();
@@ -39,7 +39,7 @@ public class DebitAccount extends Account {
             super.withdraw(getBalance());
             debit -= -withdrawFromMain;
         } else {
-            super.withdraw(getBalance());
+            super.withdraw(withdrawFromMain);
         }
 
         getHistory().addOperation(new Operation(operation));
