@@ -47,7 +47,12 @@ public class BankSystem {
         String client1Account1 = bank.createAccount(client1, interest1);
         System.out.println("-----------------------");
 
-        String client2Account1 = bank.createAccount(client2, 500.0, interest1);
+        String client2Account1 = null;
+        try {
+            client2Account1 = bank.createAccount(client2, 500.0, interest1);
+        } catch (WrongValueException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("-----------------------");
 
         try {

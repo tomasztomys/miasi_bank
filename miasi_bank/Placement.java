@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.ProductIsAlreadyClosedException;
+import custom_exceptions.WrongValueException;
 import interests.Interest;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ public class Placement extends Product {
     private Date closingDate;
     private boolean isActive;
 
-    Placement(String clientID, double startBalance, Date closingDate, Interest interest) {
+    Placement(String clientID, double startBalance, Date closingDate, Interest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
 
         this.isActive = true;

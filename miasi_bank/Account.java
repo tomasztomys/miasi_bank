@@ -1,5 +1,6 @@
 package miasi_bank;
 
+import custom_exceptions.WrongValueException;
 import interests.Interest;
 
 /**
@@ -10,7 +11,7 @@ public class Account extends Product {
         super(account);
     }
 
-    public Account(String clientID, double startBalance, Interest interest) {
+    public Account(String clientID, double startBalance, Interest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
     }
 

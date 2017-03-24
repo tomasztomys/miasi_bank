@@ -56,7 +56,7 @@ public class Bank {
         return account.getID();
     }
 
-    public String createAccount(String clientID, double startBalance, Interest interest) {
+    public String createAccount(String clientID, double startBalance, Interest interest) throws WrongValueException {
         Account account = new Account(clientID, startBalance, interest);
         accounts.add(account);
 

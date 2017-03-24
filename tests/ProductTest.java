@@ -58,6 +58,11 @@ public class ProductTest {
         productFromRef = new Product(productWithStartBalance);
     }
 
+    @Test (expected = WrongValueException.class)
+    public void createProductWithNegativeValue() throws Exception {
+        new Product(clientID, -100.0, interest1);
+    }
+
     @Test
     public void getInterest() throws Exception {
         assertEquals(interest1, product.getInterest());

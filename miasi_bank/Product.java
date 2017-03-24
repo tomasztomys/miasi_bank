@@ -26,7 +26,11 @@ public class Product {
         this.interest = product.getInterest();
     }
 
-    public Product(String clientID, double startBalance, Interest interest) {
+    public Product(String clientID, double startBalance, Interest interest) throws WrongValueException {
+        if(startBalance < 0) {
+            throw new WrongValueException("Produkt nie może być zainicjowany wartością mniejsza niż 0");
+        }
+
         this.id = UniqueID.generate();
         this.balance = startBalance;
         this.clientID = clientID;
