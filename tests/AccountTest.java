@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Tomasz Gwoździk on 24.03.2017.
  */
-public class AccountTest extends TestCase {
+public class AccountTest {
     private Product product;
     private Interest interest;
     private Account accountProductRef;
