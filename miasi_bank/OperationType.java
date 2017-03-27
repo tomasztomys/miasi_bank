@@ -1,8 +1,0 @@
-package miasi_bank;
-
-/**
- * Created by Tomasz Gwoździk on 16.03.2017.
- */
-public enum OperationType {
-    TRANSFER, DEPOSIT, WITHDRAW, INTEREST, INTEREST_CHANGE, OPEN_DEPOSIT, CLOSE_DEPOSIT, BREAK_DEPOSIT, TAKE_CREDIT, INSTALMENT, CREATE_DEBIT, MAKE_RAPORT, PAY_OFF_DEBT
-}
