@@ -5,6 +5,7 @@ import interests.Interest;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -342,41 +343,34 @@ public class Bank {
 
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account != null) {
             account.setInterest(interest, operation);
-            history.addOperation(operation);
-
-            System.out.println("Zmieniono system odsetek dla konta klienta: " + clientID + " (" + accountID + ").");
-            return;
         }
 
         Placement placement = null;
         for (Placement p: placements) {
-            if(p.getID() == accountID && p.getClientID() == clientID) placement = p;
+            if(Objects.equals(p.getID(), accountID) && Objects.equals(p.getClientID(), clientID)) placement = p;
         }
 
-        if(account != null) {
+        if(placement != null) {
             placement.setInterest(interest, operation);
-            history.addOperation(operation);
-
-            System.out.println("Zmieniono system odsetek dla konta klienta: " + clientID + " (" + accountID + ").");
-            return;
         }
 
         Loan loan = null;
         for (Loan l: loans) {
-            if(l.getID() == accountID && l.getClientID() == clientID) loan = l;
+            if(Objects.equals(l.getID(), accountID) && Objects.equals(l.getClientID(), clientID)) loan = l;
         }
 
-        if(account != null) {
+        if(loan != null) {
             loan.setInterest(interest, operation);
-            history.addOperation(operation);
+        }
 
+        if(account != null || placement != null || loan != null) {
+            history.addOperation(operation);
             System.out.println("Zmieniono system odsetek dla konta klienta: " + clientID + " (" + accountID + ").");
-            return;
         }
     }
 }
