@@ -61,7 +61,7 @@ public class BankOperationsTest {
     public void PaymentMoreThanZero() throws Exception {
         bank.payment(clientFromID, accountFromID, 3000);
 
-        assertEquals(3000, bank.getAccountBalance(clientFromID, accountFromID), 0);
+        assertEquals(3000, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
     }
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
@@ -94,7 +94,7 @@ public class BankOperationsTest {
         bank.payment(clientToID, accountToID, 3000);
         bank.withdraw(clientToID, accountToID, 3000);
 
-        assertEquals(0, bank.getAccountBalance(clientToID, accountToID), 0);
+        assertEquals(0, bank.getAccountTotalBalance(clientToID, accountToID), 0);
     }
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
@@ -132,7 +132,7 @@ public class BankOperationsTest {
         bank.payment(clientFromID, accountFromID, 3000);
         bank.transfer(clientFromID, accountFromID, accountToID, 3000);
 
-        assertEquals(0, bank.getAccountBalance(clientFromID, accountFromID), 0);
-        assertEquals(3000, bank.getAccountBalance(clientToID, accountToID), 0);
+        assertEquals(0, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
+        assertEquals(3000, bank.getAccountTotalBalance(clientToID, accountToID), 0);
     }
 }

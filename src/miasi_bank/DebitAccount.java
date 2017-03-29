@@ -31,10 +31,10 @@ public class DebitAccount extends Account {
         double withdrawFromMain = getBalance() - operation.getAmount();
 
         if(withdrawFromMain < 0) {
-            super.withdraw(getBalance());
+            if(getBalance() != 0.0) super.withdraw(getBalance());
             debit -= -withdrawFromMain;
         } else {
-            super.withdraw(withdrawFromMain);
+            super.withdraw(operation.getAmount());
         }
 
         getHistory().addOperation(new Operation(operation));

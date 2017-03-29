@@ -76,7 +76,7 @@ public class BankPlacementTest {
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
 
         assertNotNull(placementID);
-        assertEquals(1000.0, bank.getAccountBalance(clientID, accountID), 0);
+        assertEquals(1000.0, bank.getAccountTotalBalance(clientID, accountID), 0);
     }
 
     @Test

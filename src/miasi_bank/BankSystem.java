@@ -209,7 +209,7 @@ public class BankSystem {
 
         try {
             bank.setDebitAccount(client1, client1Account1, 5000.0);
-        } catch (CustomException e) {
+        } catch (DebitAccountAlreadyExists e) {
             System.out.println(e.getMessage());
         } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());
@@ -218,7 +218,7 @@ public class BankSystem {
 
         try {
             bank.setDebitAccount(client1, client1Account1, 5000.0);
-        } catch (CustomException e) {
+        } catch (DebitAccountAlreadyExists e) {
             System.out.println(e.getMessage());
         } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());

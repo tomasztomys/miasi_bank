@@ -43,7 +43,7 @@ public class Bank {
         return loans;
     }
 
-    public double getAccountBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
+    public double getAccountTotalBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
@@ -54,6 +54,19 @@ public class Bank {
         }
 
         return account.getTotalBalance();
+    }
+
+    public double getAccountBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
+        Account account = null;
+        for (Account acc: accounts) {
+            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+        }
+
+        if(account == null) {
+            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+        }
+
+        return account.getBalance();
     }
 
     public String addClient(String name, String surname, String pesel) throws ClientAlreadyExistException {
@@ -276,7 +289,7 @@ public class Bank {
         return balance;
     }
 
-    public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws CustomException, ClientOrProductDoesNotExistException {
+    public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws DebitAccountAlreadyExists, ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
             if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
@@ -287,7 +300,7 @@ public class Bank {
         }
 
         if(account instanceof DebitAccount) {
-            throw new ClientOrProductDoesNotExistException("Nie można utworzyć konta debetowego, z konta, które ma już założony debet!");
+            throw new DebitAccountAlreadyExists("Nie można utworzyć konta debetowego, z konta, które ma już założony debet!");
         }
 
         Operation operation = new Operation(OperationType.CREATE_DEBIT, clientID, maxDebit, accountID, null);

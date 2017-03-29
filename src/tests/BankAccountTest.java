@@ -50,7 +50,7 @@ public class BankAccountTest {
         String clientID = bank.addClient("Tomasz","Franek","12323534");
         String accountID = bank.createAccount(clientID, interest);
 
-        assertEquals(0,bank.getAccountBalance(clientID, accountID), 0);
+        assertEquals(0,bank.getAccountTotalBalance(clientID, accountID), 0);
     }
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
@@ -69,7 +69,7 @@ public class BankAccountTest {
         String clientID = bank.addClient("Tomasz", "Franek", "12323534");
         String accountID = bank.createAccount(clientID, 0, interest);
 
-        assertEquals(0,bank.getAccountBalance(clientID, accountID), 0);
+        assertEquals(0,bank.getAccountTotalBalance(clientID, accountID), 0);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class BankAccountTest {
         String accountID = bank.createAccount(clientID, 500.0, interest);
 
         assertNotNull(accountID);
-        assertEquals(500.0,bank.getAccountBalance(clientID, accountID), 0);
+        assertEquals(500.0,bank.getAccountTotalBalance(clientID, accountID), 0);
     }
 
     @Test
