@@ -3,9 +3,6 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class Bank {
     private Set<Client> clients;
     private Set<Account> accounts;
@@ -46,7 +43,7 @@ public class Bank {
     public double getAccountTotalBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -59,7 +56,7 @@ public class Bank {
     public double getAccountBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -72,7 +69,7 @@ public class Bank {
     public String addClient(String name, String surname, String pesel) throws ClientAlreadyExistException {
         boolean isOnList = false;
         for (Client client: clients) {
-            if(client.getPesel() == pesel) isOnList = true;
+            if(Objects.equals(client.getPesel(), pesel)) isOnList = true;
         }
 
         if(isOnList) {
@@ -106,7 +103,7 @@ public class Bank {
     public String createAccount(String clientID, double startBalance, Interest interest) throws WrongValueException, ClientOrProductDoesNotExistException {
         Client client = null;
         for (Client c: clients) {
-            if(c.getId() == clientID) client = c;
+            if(Objects.equals(c.getId(), clientID)) client = c;
         }
 
         if(client == null) {
@@ -123,7 +120,7 @@ public class Bank {
     public double payment(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -135,14 +132,14 @@ public class Bank {
         double balance = account.payment(operation);
         history.addOperation(operation);
 
-        System.out.println("Dokonano wpłaty na konto bankowe klienta " + clientID + " (" + accountID + "). Stan konta: " + balance);
+        System.out.println("Dokonano wpłate na konto bankowe klienta " + clientID + " (" + accountID + "). Stan konta: " + balance);
         return balance;
     }
 
     public double withdraw(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -162,8 +159,8 @@ public class Bank {
         Account accountFrom = null;
         Account accountTo = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountFromID && acc.getClientID() == clientID) accountFrom = acc;
-            if(acc.getID() == accountToID) accountTo = acc;
+            if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
+            if(Objects.equals(acc.getID(), accountToID)) accountTo = acc;
         }
 
         if(accountFrom == null) {
@@ -188,7 +185,7 @@ public class Bank {
     public String createPlacement(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -209,7 +206,7 @@ public class Bank {
     public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws ClientOrProductDoesNotExistException, ProductIsAlreadyClosedException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -218,7 +215,7 @@ public class Bank {
 
         Placement placement = null;
         for (Placement p: placements) {
-            if(p.getID() == placementID && p.getClientID() == clientID) placement = p;
+            if(Objects.equals(p.getID(), placementID) && Objects.equals(p.getClientID(), clientID)) placement = p;
         }
 
         if(placement == null) {
@@ -237,7 +234,7 @@ public class Bank {
     public String createLoan(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -256,10 +253,10 @@ public class Bank {
         return loan.getID();
     }
 
-    public double payOffLoan(String clientID, String accountID, String loanID, Date closingDate) throws ClientOrProductDoesNotExistException, NoResourcesToPayOffLoanExeption, NoResourcesException, WrongValueException, ProductIsAlreadyClosedException {
+    public double payOffLoan(String clientID, String accountID, String loanID, Date closingDate) throws ClientOrProductDoesNotExistException, NoResourcesToPayOffLoanExeption, NoResourcesException, WrongValueException, ProductIsAlreadyClosedException, WrongCloseDateException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -268,7 +265,7 @@ public class Bank {
 
         Loan loan = null;
         for (Loan l: loans) {
-            if(l.getID() == loanID && l.getClientID() == clientID) loan = l;
+            if(Objects.equals(l.getID(), loanID) && Objects.equals(l.getClientID(), clientID)) loan = l;
         }
 
         if(loan == null) {
@@ -277,6 +274,8 @@ public class Bank {
 
         double interest = loan.getInterest(closingDate);
 
+        System.out.println(account.getBalance());
+        System.out.println(loan.getBalance());
         if(account.getBalance() < loan.getBalance() + interest) {
             throw new NoResourcesToPayOffLoanExeption("Nie masz wystarczających środków aby spłacić kredyt!");
         }
@@ -292,7 +291,7 @@ public class Bank {
     public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws DebitAccountAlreadyExists, ClientOrProductDoesNotExistException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {
@@ -328,7 +327,7 @@ public class Bank {
     public double calculateAndAddInterestToAccount(String clientID, String accountID) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
-            if(acc.getID() == accountID && acc.getClientID() == clientID) account = acc;
+            if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
         if(account == null) {

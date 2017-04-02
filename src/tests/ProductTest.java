@@ -5,9 +5,6 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Tomasz Gwoździk on 23.03.2017.
- */
 public class ProductTest {
     private Interest interest1;
     private Interest interest2;

@@ -5,9 +5,6 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Tomasz Gwoździk on 27.03.2017.
- */
 public class BankOperationsTest {
     private Interest interest;
     private Bank bank;

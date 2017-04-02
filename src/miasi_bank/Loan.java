@@ -1,8 +1,5 @@
 import java.util.Date;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class Loan extends Product {
     private Date closingDate;
     private boolean isActive;
@@ -18,8 +15,11 @@ public class Loan extends Product {
         return super.getInterest().calculate(getBalance(), getCreationDate(), date);
     }
 
-    public double close(Date date) throws ProductIsAlreadyClosedException {
+    public double close(Date date) throws ProductIsAlreadyClosedException, WrongCloseDateException {
         if(!isActive) throw new ProductIsAlreadyClosedException("Lokata " + getID() + " została już zamknięta");
+        if(getCreationDate().compareTo(date) > 0) {
+            throw new WrongCloseDateException("Niepoprawna data zamkniecia lokaty " + getID());
+        }
 
         this.isActive = false;
 

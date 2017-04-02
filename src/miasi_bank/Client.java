@@ -1,8 +1,5 @@
 import java.util.Date;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class Client {
     private String id;
     private String name;

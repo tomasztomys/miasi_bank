@@ -1,8 +1,5 @@
 import java.util.Date;
 
-/**
- * Created by Tomasz Gwoździk on 23.03.2017.
- */
 public class LinearInterest implements Interest {
     private double percent;
 

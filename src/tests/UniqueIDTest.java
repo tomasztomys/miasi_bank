@@ -2,9 +2,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Tomasz Gwoździk on 23.03.2017.
- */
 public class UniqueIDTest {
     @Test
     public void generate() throws Exception {

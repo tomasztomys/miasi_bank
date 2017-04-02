@@ -1,9 +1,6 @@
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class History {
     private Set<Operation> operations;
 
