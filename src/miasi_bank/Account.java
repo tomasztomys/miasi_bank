@@ -1,6 +1,3 @@
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class Account extends Product {
     public Account(Product account) {
         super(account);

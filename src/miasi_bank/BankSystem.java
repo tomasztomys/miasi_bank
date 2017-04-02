@@ -3,9 +3,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class BankSystem {
     public static void main(String[] args) {
         Interest interest1 = new LinearInterest(2.0);
@@ -189,6 +186,8 @@ public class BankSystem {
             System.out.println(e.getMessage());
         } catch (NoResourcesException e) {
             System.out.println(e.getMessage());
+        } catch (WrongCloseDateException e) {
+            e.printStackTrace();
         }
         System.out.println("-----------------------");
 

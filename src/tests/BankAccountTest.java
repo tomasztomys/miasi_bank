@@ -6,9 +6,6 @@ import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by inf117199 on 24.03.2017.
- */
 public class BankAccountTest {
     private Interest interest;
     private Bank bank;

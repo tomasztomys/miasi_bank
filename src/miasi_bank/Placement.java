@@ -1,8 +1,5 @@
 import java.util.Date;
 
-/**
- * Created by Tomasz Gwoździk on 22.03.2017.
- */
 public class Placement extends Product {
     private Date closingDate;
     private boolean isActive;

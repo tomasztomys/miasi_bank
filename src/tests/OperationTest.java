@@ -3,9 +3,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Tomasz Gwoździk on 23.03.2017.
- */
 public class OperationTest {
     String clientID;
     String fromID;

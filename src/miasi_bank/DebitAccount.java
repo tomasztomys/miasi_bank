@@ -1,6 +1,3 @@
-/**
- * Created by Tomasz Gwoździk on 23.03.2017.
- */
 public class DebitAccount extends Account {
     private double debit;
     private double maxDebit;

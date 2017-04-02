@@ -6,9 +6,6 @@ import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Tomasz Gwoździk on 24.03.2017.
- */
 public class DebitAccountTest {
     private Account account;
     private Product product;
