@@ -250,5 +250,9 @@ public class BankSystem {
             System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
+
+        bank.makeRaport(ReportType.UNDER_LIMIT, 1000);
+        bank.makeRaport(ReportType.AT_LEAST_LIMIT, 1000);
+        System.out.println("-----------------------");
     }
 }

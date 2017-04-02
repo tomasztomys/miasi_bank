@@ -384,4 +384,22 @@ public class Bank {
             System.out.println("Zmieniono system odsetek dla konta klienta: " + clientID + " (" + accountID + ").");
         }
     }
+
+    public Set<Product> getProducts() {
+        Set<Product> products = new LinkedHashSet<>();
+        products.addAll(this.accounts);
+        products.addAll(this.loans);
+        products.addAll(this.placements);
+
+        return products;
+    }
+
+    public Set<Product> makeRaport(ReportType type, Integer limit) {
+        ReportSystem reportSystem = new ReportSystem();
+        if(type.equals(ReportType.UNDER_LIMIT)) {
+            return reportSystem.getProductsUnderLimit(this.getProducts(), limit);
+        } else {
+            return reportSystem.getProductsAtLeastLimit(this.getProducts(), limit);
+        }
+    }
 }
