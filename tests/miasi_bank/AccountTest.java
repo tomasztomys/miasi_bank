@@ -1,3 +1,5 @@
+package miasi_bank;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class AccountTest {
     private Product product;
-    private Interest interest;
+    private IInterest interest;
     private Account accountProductRef;
     private Account accountNoStartBalance;
     private Account accountWithStartBalance;
@@ -15,7 +17,7 @@ public class AccountTest {
 
     @Before
     public void setUp() throws Exception {
-        interest = new Interest() {
+        interest = new IInterest() {
             @Override
             public double calculate(double amount) {
                 return amount * 0.02;

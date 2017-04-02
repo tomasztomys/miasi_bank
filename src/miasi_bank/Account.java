@@ -1,13 +1,17 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 public class Account extends Product {
     public Account(Product account) {
         super(account);
     }
 
-    public Account(String clientID, double startBalance, Interest interest) throws WrongValueException {
+    public Account(String clientID, double startBalance, IInterest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
     }
 
-    public Account(String clientID, Interest interest) {
+    public Account(String clientID, IInterest interest) {
         super(clientID, interest);
     }
 

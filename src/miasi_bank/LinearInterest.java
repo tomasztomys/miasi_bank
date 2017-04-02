@@ -1,6 +1,8 @@
+package miasi_bank;
+
 import java.util.Date;
 
-public class LinearInterest implements Interest {
+public class LinearInterest implements IInterest {
     private double percent;
 
     public LinearInterest(double percent) {

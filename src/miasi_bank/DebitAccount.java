@@ -1,3 +1,8 @@
+package miasi_bank;
+
+import custom_exceptions.NoResourcesException;
+import custom_exceptions.WrongValueException;
+
 public class DebitAccount extends Account {
     private double debit;
     private double maxDebit;

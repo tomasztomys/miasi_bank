@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -5,8 +9,8 @@ import java.util.Date;
 
 public class BankSystem {
     public static void main(String[] args) {
-        Interest interest1 = new LinearInterest(2.0);
-        Interest interest2 = new LinearInterest(4.0);
+        IInterest interest1 = new LinearInterest(2.0);
+        IInterest interest2 = new LinearInterest(4.0);
 
         Bank bank = new Bank();
         System.out.println("-----------------------");

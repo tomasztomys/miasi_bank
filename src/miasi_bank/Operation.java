@@ -1,3 +1,5 @@
+package miasi_bank;
+
 import java.util.Date;
 
 public class Operation {
