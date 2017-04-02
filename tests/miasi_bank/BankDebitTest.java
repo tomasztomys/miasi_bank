@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -6,14 +10,14 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 public class BankDebitTest {
-    private Interest interest;
+    private IInterest interest;
     private Bank bank;
     private String clientID;
     private String accountID;
 
     @Before
     public void setUp() throws Exception {
-        interest = new Interest() {
+        interest = new IInterest() {
             @Override
             public double calculate(double amount) {
                 return amount * 0.05;

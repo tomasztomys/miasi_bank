@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -6,8 +10,8 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 public class ProductTest {
-    private Interest interest1;
-    private Interest interest2;
+    private IInterest interest1;
+    private IInterest interest2;
     private Product product;
     private Product productFromRef;
     private Product productWithStartBalance;
@@ -15,7 +19,7 @@ public class ProductTest {
 
     @Before
     public void setUp() throws Exception {
-        interest1 = new Interest() {
+        interest1 = new IInterest() {
             @Override
             public double calculate(double amount) {
                 return amount * 2;
@@ -27,7 +31,7 @@ public class ProductTest {
             }
         };
 
-        interest2 = new Interest() {
+        interest2 = new IInterest() {
             @Override
             public double calculate(double amount) {
                 return amount * 4;
@@ -78,14 +82,14 @@ public class ProductTest {
         assertEquals(1000.1, productWithStartBalance.getBalance(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void paymentNegativeOperation() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, -1000.0, null, null);
 
         productWithStartBalance.payment(operation);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void paymentZeroOperation() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, 0, null, null);
 
@@ -99,12 +103,12 @@ public class ProductTest {
         assertEquals(0.1, product.getBalance(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void paymentNegativeAmount() throws Exception {
         product.payment(-1000.0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void paymentZeroAmount() throws Exception {
         product.payment(0.0);
     }
@@ -118,21 +122,21 @@ public class ProductTest {
         assertEquals(900.0, balance, 0);
     }
 
-    @Test (expected=NoResourcesException.class)
+    @Test (expected= NoResourcesException.class)
     public void withdrawNoMoneyOperation() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, 100000.0, null, null);
 
         product.withdraw(operation);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void withdrawNegativeOperation() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, -100.0, null, null);
 
         product.withdraw(operation);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void withdrawZeroOperation() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, 0.0, null, null);
 
@@ -145,17 +149,17 @@ public class ProductTest {
         assertEquals(900.0, balance, 0);
     }
 
-    @Test (expected=NoResourcesException.class)
+    @Test (expected= NoResourcesException.class)
     public void withdrawNoMoneyAmount() throws Exception {
         productWithStartBalance.withdraw(100000.0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void withdrawNegativeAmount() throws Exception {
         productWithStartBalance.withdraw(-100.0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void withdrawZeroAmount() throws Exception {
         productWithStartBalance.withdraw(0.0);
     }
@@ -204,7 +208,7 @@ public class ProductTest {
         assertEquals(1, productWithStartBalance.getHistory().getHistory().size(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void getHistoryOperationWithdrawZero() throws Exception {
         Operation operation = new Operation(OperationType.WITHDRAW, null, 0.0, null, null);
 
@@ -213,7 +217,7 @@ public class ProductTest {
         assertEquals(0, productWithStartBalance.getHistory().getHistory().size(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void getHistoryOperationWithdrawNegative() throws Exception {
         Operation operation = new Operation(OperationType.WITHDRAW, null, -100.0, null, null);
 
@@ -231,7 +235,7 @@ public class ProductTest {
         assertEquals(1.0, productWithStartBalance.getHistory().getHistory().size(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void getHistoryOperationPaymentZero() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, 0.0, null, null);
 
@@ -240,7 +244,7 @@ public class ProductTest {
         assertEquals(0.0, productWithStartBalance.getHistory().getHistory().size(), 0);
     }
 
-    @Test (expected=WrongValueException.class)
+    @Test (expected= WrongValueException.class)
     public void getHistoryOperationPaymentNegative() throws Exception {
         Operation operation = new Operation(OperationType.PAYMENT, null, -100.0, null, null);
 

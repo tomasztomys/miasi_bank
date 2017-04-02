@@ -1,10 +1,14 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import java.util.Date;
 
 public class Placement extends Product {
     private Date closingDate;
     private boolean isActive;
 
-    public Placement(String clientID, double startBalance, Date closingDate, Interest interest) throws WrongValueException {
+    public Placement(String clientID, double startBalance, Date closingDate, IInterest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
 
         this.isActive = true;

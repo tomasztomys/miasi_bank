@@ -1,3 +1,5 @@
+package miasi_bank;
+
 import org.junit.Before;
 import org.junit.Test;
 

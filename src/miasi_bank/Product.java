@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import java.util.Date;
 
 public class Product {
@@ -6,7 +10,7 @@ public class Product {
     private String clientID;
     private Date creationDate;
     private History history;
-    private Interest interest;
+    private IInterest interest;
 
     public Product(Product product) {
         this.id = product.getID();
@@ -17,7 +21,7 @@ public class Product {
         this.interest = product.getInterest();
     }
 
-    public Product(String clientID, double startBalance, Interest interest) throws WrongValueException {
+    public Product(String clientID, double startBalance, IInterest interest) throws WrongValueException {
         if(startBalance < 0) {
             throw new WrongValueException("Produkt nie może być zainicjowany wartością mniejsza niż 0");
         }
@@ -30,7 +34,7 @@ public class Product {
         this.interest = interest;
     }
 
-    public Product(String clientID, Interest interest) {
+    public Product(String clientID, IInterest interest) {
         this.id = UniqueID.generate();
         this.balance = 0.0;
         this.clientID = clientID;
@@ -39,10 +43,10 @@ public class Product {
         this.interest = interest;
     }
 
-    public Interest getInterest() {
+    public IInterest getInterest() {
         return interest;
     }
-    public void setInterest(Interest interest, Operation operation) {
+    public void setInterest(IInterest interest, Operation operation) {
         this.interest = interest;
         history.addOperation(new Operation(operation));
     }

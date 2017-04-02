@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -83,7 +87,7 @@ public class Bank {
         return client.getId();
     }
 
-    public String createAccount(String clientID, Interest interest) throws ClientOrProductDoesNotExistException {
+    public String createAccount(String clientID, IInterest interest) throws ClientOrProductDoesNotExistException {
         Client client = null;
         for (Client c: clients) {
             if(c.getId() == clientID) client = c;
@@ -100,7 +104,7 @@ public class Bank {
         return account.getID();
     }
 
-    public String createAccount(String clientID, double startBalance, Interest interest) throws WrongValueException, ClientOrProductDoesNotExistException {
+    public String createAccount(String clientID, double startBalance, IInterest interest) throws WrongValueException, ClientOrProductDoesNotExistException {
         Client client = null;
         for (Client c: clients) {
             if(Objects.equals(c.getId(), clientID)) client = c;
@@ -182,7 +186,7 @@ public class Bank {
         return balance;
     }
 
-    public String createPlacement(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
+    public String createPlacement(String clientID, String accountID, double amount, Date closingDate, IInterest interest) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
@@ -231,7 +235,7 @@ public class Bank {
         return balance;
     }
 
-    public String createLoan(String clientID, String accountID, double amount, Date closingDate, Interest interest) throws ClientOrProductDoesNotExistException, WrongValueException {
+    public String createLoan(String clientID, String accountID, double amount, Date closingDate, IInterest interest) throws ClientOrProductDoesNotExistException, WrongValueException {
         Account account = null;
         for (Account acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
@@ -345,7 +349,7 @@ public class Bank {
         return account.getBalance();
     }
 
-    public void changeInterest(String clientID, String accountID, Interest interest) throws CustomException {
+    public void changeInterest(String clientID, String accountID, IInterest interest) throws CustomException {
         Operation operation = new Operation(OperationType.CHANGE_INTEREST_MECHANISM, clientID, 0.0, accountID, null);
 
         Account account = null;

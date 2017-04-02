@@ -1,3 +1,7 @@
+package miasi_bank;
+
+import custom_exceptions.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,13 +14,13 @@ public class DebitAccountTest {
     private Account account;
     private Product product;
     private DebitAccount debitAccount;
-    private Interest interest;
+    private IInterest interest;
     private String clientID;
     private Operation operation;
 
     @Before
     public void setUp() throws Exception {
-        interest = new Interest() {
+        interest = new IInterest() {
             @Override
             public double calculate(double amount) {
                 return amount * 2;
