@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.*;
+import miasi_bank.interests.IInterest;
 
 public class Account extends Product {
     public Account(Product account) {

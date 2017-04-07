@@ -1,5 +1,6 @@
 package miasi_bank;
 
+import miasi_bank.interests.IInterest;
 import org.junit.Before;
 import org.junit.Test;
 

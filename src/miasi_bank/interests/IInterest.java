@@ -1,4 +1,4 @@
-package miasi_bank;
+package miasi_bank.interests;
 
 import java.util.Date;
 

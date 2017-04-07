@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.*;
+import miasi_bank.interests.IInterest;
 
 import java.util.Date;
 import java.util.LinkedHashSet;

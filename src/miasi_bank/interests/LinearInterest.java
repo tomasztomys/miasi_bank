@@ -1,17 +1,11 @@
-package miasi_bank;
+package miasi_bank.interests;
+
+import miasi_bank.interests.IInterest;
 
 import java.util.Date;
 
 public class LinearInterest implements IInterest {
-    private double percent;
-
-    public LinearInterest(double percent) {
-        this.percent = percent / 100;
-    }
-
-    public double getPercent() {
-        return percent;
-    }
+    private double percent = 0.02;
 
     @Override
     public double calculate(double amount) {

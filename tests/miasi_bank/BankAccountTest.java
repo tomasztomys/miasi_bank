@@ -2,6 +2,9 @@ package miasi_bank;
 
 import custom_exceptions.*;
 
+import miasi_bank.interests.ExtendedInterest;
+import miasi_bank.interests.IInterest;
+import miasi_bank.interests.JuniorInterest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +15,8 @@ import static org.junit.Assert.*;
 
 public class BankAccountTest {
     private IInterest interest;
+    private IInterest juniorInterest;
+    private IInterest extendedInterest;
     private Bank bank;
 
     @Before
@@ -28,7 +33,73 @@ public class BankAccountTest {
             }
         };
 
+
         bank = new Bank();
+    }
+
+
+    @Test
+    public void checkJuniorInterestEdge() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        this.juniorInterest = new JuniorInterest();
+
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 100.0, juniorInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(105.0, bank.getAccountBalance(clientID, accountID), 0.01);
+    }
+
+    @Test
+    public void checkJuniorInterest1() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        this.juniorInterest = new JuniorInterest();
+
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 1000.0, juniorInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(1050.0, bank.getAccountBalance(clientID, accountID), 0.01);
+    }
+
+
+    @Test
+    public void checkJuniorInterest2() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        this.juniorInterest = new JuniorInterest();
+
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 5000.0, juniorInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(5090.0, bank.getAccountBalance(clientID, accountID), 0.01);
+    }
+
+    @Test
+    public void checkExtendedInterestFirst() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        ExtendedInterest extendedInterest = new ExtendedInterest();
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 5000.0, extendedInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(5050.0, bank.getAccountBalance(clientID, accountID), 0.01);
+    }
+
+    @Test
+    public void checkExtendedInterestSecond() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        ExtendedInterest extendedInterest = new ExtendedInterest();
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 13000.0, extendedInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(13160.0, bank.getAccountBalance(clientID, accountID), 0.01);
+    }
+
+    @Test
+    public void checkExtendedInterestThird() throws ClientAlreadyExistException, ClientOrProductDoesNotExistException, WrongValueException {
+        ExtendedInterest extendedInterest = new ExtendedInterest();
+        String clientID = bank.addClient("Tomasz", "Franek", "12323534");
+        String accountID = bank.createAccount(clientID, 20000.0, extendedInterest);
+        bank.calculateAndAddInterestToAccount(clientID, accountID);
+
+        assertEquals(20350.0, bank.getAccountBalance(clientID, accountID), 0.01);
     }
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
