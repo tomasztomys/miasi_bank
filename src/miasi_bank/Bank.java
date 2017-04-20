@@ -2,6 +2,7 @@ package miasi_bank;
 
 import custom_exceptions.*;
 import miasi_bank.interests.IInterest;
+import miasi_bank.operations.Payment;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -134,7 +135,9 @@ public class Bank {
 
         Operation operation = new Operation(OperationType.PAYMENT, clientID, amount, null, accountID);
 
-        double balance = account.payment(operation);
+        Payment payment = new Payment(account, amount, operation);
+        double balance = payment.execute();
+
         history.addOperation(operation);
 
         System.out.println("Dokonano wpłate na konto bankowe klienta " + clientID + " (" + accountID + "). Stan konta: " + balance);
