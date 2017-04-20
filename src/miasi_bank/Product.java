@@ -44,6 +44,10 @@ public class Product {
         this.interest = interest;
     }
 
+    public void __setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public IInterest getInterest() {
         return interest;
     }
