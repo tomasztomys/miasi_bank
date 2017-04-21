@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.*;
+import miasi_bank.interests.ExtendedInterest;
 import miasi_bank.interests.IInterest;
 import miasi_bank.operations.Payment;
 
@@ -15,6 +16,7 @@ public class Bank {
     private Set<Placement> placements;
     private Set<Loan> loans;
     private History history;
+    private String id;
 
     public Bank() {
         this.clients = new LinkedHashSet<>();
@@ -22,8 +24,13 @@ public class Bank {
         this.placements = new LinkedHashSet<>();
         this.loans = new LinkedHashSet<>();
         this.history = new History();
+        this.id = UniqueID.generate();
 
         System.out.println("Utworzono nowy bank.");
+    }
+
+    public String getBankId() {
+        return id;
     }
 
     public History getHistory() {
@@ -405,5 +412,53 @@ public class Bank {
         } else {
             return reportSystem.getProductsAtLeastLimit(this.getProducts(), limit);
         }
+    }
+
+    public void makeExternalOperation(String bankID, String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
+        Account accountFrom = null;
+        for (Account acc: accounts) {
+            if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
+        }
+
+        if(accountFrom == null) {
+            throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
+        }
+
+        Operation operation = new Operation(OperationType.TRANSFER, clientID, amount, accountFromID, accountToID);
+        accountFrom.withdraw(operation);
+
+        KIR.makeOperation(getBankId(), bankID, accountFromID, accountToID, amount);
+
+        history.addOperation(operation);
+
+        System.out.println("Dokonano przelewu na inne konto bankowe klienta " + clientID + " (" + accountFromID + " -> " + accountToID + ")");
+    }
+
+    public void receiveExternalPaymentOperation(String accountID, double amount) throws WrongValueException, ClientOrProductDoesNotExistException {
+        Account account = null;
+        for (Account acc: accounts) {
+            if(Objects.equals(acc.getID(), accountID)) account = acc;
+        }
+
+        if(account == null) throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
+
+        account.payment(amount);
+    }
+
+    public void receiveExternalErrorOperation(String accountID, double amount) {
+        Account account = null;
+        for (Account acc: accounts) {
+            if(Objects.equals(acc.getID(), accountID)) account = acc;
+        }
+
+        try {
+            account.payment(amount);
+        } catch (WrongValueException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void receiveExternalSuccessOperation() {
+        //do nothing
     }
 }

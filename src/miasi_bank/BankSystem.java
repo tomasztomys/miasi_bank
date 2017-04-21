@@ -256,5 +256,38 @@ public class BankSystem {
         bank.makeRaport(ReportType.UNDER_LIMIT, 1000);
         bank.makeRaport(ReportType.AT_LEAST_LIMIT, 1000);
         System.out.println("-----------------------");
+
+        Bank bank2 = new Bank();
+
+        String client4 = null;
+        try {
+            client4 = bank2.addClient("Tomasz", "Gwoździk", "0");
+        } catch (ClientAlreadyExistException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        String client4Account1 = null;
+        try {
+            client4Account1 = bank2.createAccount(client4, interest1);
+        } catch (ClientOrProductDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("-----------------------");
+
+        //KIR kir = new KIR();
+
+        KIR.addBank(bank);
+        KIR.addBank(bank2);
+
+        try {
+            bank.makeExternalOperation(bank2.getBankId(), client1, client1Account1, client4Account1, 500.0);
+        } catch (ClientOrProductDoesNotExistException e) {
+            e.printStackTrace();
+        } catch (NoResourcesException e) {
+            e.printStackTrace();
+        } catch (WrongValueException e) {
+            e.printStackTrace();
+        }
     }
 }
