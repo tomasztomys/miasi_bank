@@ -2,9 +2,6 @@ package miasi_bank.interests;
 
 import java.util.Date;
 
-/**
- * Created by inf117225 on 07.04.2017.
- */
 public class JuniorInterest implements IInterest {
 
     @Override

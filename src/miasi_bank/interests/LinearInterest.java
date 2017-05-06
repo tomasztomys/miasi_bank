@@ -1,7 +1,5 @@
 package miasi_bank.interests;
 
-import miasi_bank.interests.IInterest;
-
 import java.util.Date;
 
 public class LinearInterest implements IInterest {
