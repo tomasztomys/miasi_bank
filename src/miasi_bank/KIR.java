@@ -18,17 +18,24 @@ public final class KIR {
         banks.add(bank);
     }
 
-    public static void makeOperation(String bankFromID, String bankToID, String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException {
-        Bank bankFrom = null;
-        Bank bankTo = null;
+    private static Bank findBank(String accountID) {
+        Bank searchedBank = null;
 
         for (Bank bank: banks) {
-            if(Objects.equals(bank.getBankId(), bankFromID)) bankFrom = bank;
-            if(Objects.equals(bank.getBankId(), bankToID)) bankTo = bank;
+            for (Account account : bank.getAccounts()) {
+                if(account.getID().equals(accountID)) searchedBank = bank;
+            }
         }
 
+        return searchedBank;
+    }
+
+    public static void makeOperation(String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, WrongValueException {
+        Bank bankFrom = findBank(accountFromID);
+        Bank bankTo = findBank(accountToID);
+
         if(bankFrom == null || bankTo == null) {
-            bankFrom.receiveExternalErrorOperation(accountFromID, amount);
+            bankFrom.receiveExternalErrorOperation(accountFromID, amount, );
         }
 
         try {
@@ -38,7 +45,5 @@ public final class KIR {
 
             throw new ClientOrProductDoesNotExistException("Brak konta w banku docelowym");
         }
-
-        bankTo.receiveExternalSuccessOperation();
     }
 }

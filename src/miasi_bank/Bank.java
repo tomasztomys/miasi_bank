@@ -414,7 +414,7 @@ public class Bank {
         }
     }
 
-    public void makeExternalOperation(String bankID, String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
+    public void makeExternalOperation(String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         Account accountFrom = null;
         for (Account acc: accounts) {
             if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
@@ -427,7 +427,7 @@ public class Bank {
         Operation operation = new Operation(OperationType.TRANSFER, clientID, amount, accountFromID, accountToID);
         accountFrom.withdraw(operation);
 
-        KIR.makeOperation(getBankId(), bankID, accountFromID, accountToID, amount);
+        KIR.makeOperation(accountFromID, accountToID, amount);
 
         history.addOperation(operation);
 
@@ -458,7 +458,4 @@ public class Bank {
         }
     }
 
-    public void receiveExternalSuccessOperation() {
-        //do nothing
-    }
 }
