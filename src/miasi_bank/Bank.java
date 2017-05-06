@@ -295,7 +295,8 @@ public class Bank {
             throw new NoResourcesToPayOffLoanExeption("Nie masz wystarczających środków aby spłacić kredyt!");
         }
 
-        Operation operation = new Operation(OperationType.PAY_OFF_LOAN, clientID, loan.close(closingDate), accountID, loan.getID());
+        loan.close(closingDate);
+        Operation operation = new Operation(OperationType.PAY_OFF_LOAN, clientID, loan.getTotalAmount(), accountID, loan.getID());
         double balance = account.withdraw(operation);
         history.addOperation(operation);
 

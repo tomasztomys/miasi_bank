@@ -58,7 +58,8 @@ public class LoanTest {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
         Date date = format.parse("01.06.2017");
 
-        double payOff = loan.close(date);
+        loan.close(date);
+        double payOff = loan.getTotalAmount();
 
         assertEquals(1020.0, payOff, 0);
     }
