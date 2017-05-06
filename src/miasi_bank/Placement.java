@@ -26,16 +26,4 @@ public class Placement extends Product {
 
         return getBalance();
     }
-
-    @Deprecated
-    @Override
-    public double withdraw(Operation operation) {
-        return 0.0;
-    }
-
-    @Deprecated
-    @Override
-    public double payment(Operation operation) {
-        return 0.0;
-    }
 }

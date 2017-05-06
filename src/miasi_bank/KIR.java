@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.ClientOrProductDoesNotExistException;
+import custom_exceptions.WrongValueException;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public final class KIR {
         Bank searchedBank = null;
 
         for (Bank bank: banks) {
-            for (Account account : bank.getAccounts()) {
+            for (IAccount account : bank.getAccounts()) {
                 if(account.getID().equals(accountID)) searchedBank = bank;
             }
         }
@@ -34,16 +35,12 @@ public final class KIR {
         Bank bankFrom = findBank(accountFromID);
         Bank bankTo = findBank(accountToID);
 
-        if(bankFrom == null || bankTo == null) {
-            bankFrom.receiveExternalErrorOperation(accountFromID, amount, );
-        }
-
-        try {
-            bankTo.receiveExternalPaymentOperation(accountToID, amount);
-        } catch (Exception e) {
-            bankFrom.receiveExternalErrorOperation(accountFromID, amount);
+        if (bankTo == null) {
+            bankFrom.receiveExternalErrorOperation(accountFromID, accountToID, amount);
 
             throw new ClientOrProductDoesNotExistException("Brak konta w banku docelowym");
         }
+
+        bankTo.receiveExternalPaymentOperation(accountToID, accountFromID, amount);
     }
 }

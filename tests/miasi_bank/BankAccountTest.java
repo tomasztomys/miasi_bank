@@ -164,7 +164,7 @@ public class BankAccountTest {
 
         assertEquals(2.0, bank.getAccounts().size(), 0);
 
-        Iterator<Account> iterator = bank.getAccounts().iterator();
+        Iterator<IAccount> iterator = bank.getAccounts().iterator();
         assertEquals(clientID, iterator.next().getClientID());
         assertEquals(clientID, iterator.next().getClientID());
     }

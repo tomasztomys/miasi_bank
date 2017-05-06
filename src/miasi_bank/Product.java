@@ -5,7 +5,7 @@ import miasi_bank.interests.IInterest;
 
 import java.util.Date;
 
-public class Product {
+public class Product implements IAccount {
     private double balance;
     private String id;
     private String clientID;
@@ -66,6 +66,10 @@ public class Product {
         return balance;
     }
 
+    public double getTotalBalance() {
+        return balance;
+    }
+
     public double payment(Operation operation) throws WrongValueException {
         if(operation.getAmount() <= 0) {
             throw new WrongValueException("Nieprawidłowa wartość wpłaty " + clientID + " (" + id + ") Wpłata: " + operation.getAmount());
@@ -118,6 +122,11 @@ public class Product {
 
     public double getBalance() {
         return balance;
+    }
+
+    @Override
+    public double calculateInterest() {
+        return getInterest().calculate(getBalance());
     }
 
     public Date getCreationDate() {

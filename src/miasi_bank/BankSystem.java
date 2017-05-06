@@ -184,8 +184,8 @@ public class BankSystem {
             System.out.println(e.getMessage());
         } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());
-        } catch (NoResourcesToPayOffLoanExeption noResourcesToPayOffLoanExeption) {
-            noResourcesToPayOffLoanExeption.printStackTrace();
+        } catch (NoResourcesToPayOffLoanExeption e) {
+            System.out.println(e.getMessage());
         } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         } catch (ProductIsAlreadyClosedException e) {
@@ -193,7 +193,7 @@ public class BankSystem {
         } catch (NoResourcesException e) {
             System.out.println(e.getMessage());
         } catch (WrongCloseDateException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         System.out.println("-----------------------");
 
@@ -275,19 +275,17 @@ public class BankSystem {
         }
         System.out.println("-----------------------");
 
-        //KIR kir = new KIR();
-
         KIR.addBank(bank);
         KIR.addBank(bank2);
 
         try {
-            bank.makeExternalOperation(bank2.getBankId(), client1, client1Account1, client4Account1, 500.0);
+            bank.makeExternalOperation(client1, client1Account1, client4Account1, 500.0);
         } catch (ClientOrProductDoesNotExistException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (NoResourcesException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (WrongValueException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

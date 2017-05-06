@@ -56,7 +56,7 @@ public class LoanTest {
     @Test
     public void close() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("01.06.2017");
 
         double payOff = loan.close(date);
 
@@ -66,7 +66,7 @@ public class LoanTest {
     @Test (expected = ProductIsAlreadyClosedException.class)
     public void closeWhenInactive() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("01.06.2017");
 
         loan.close(date);
         loan.close(date);

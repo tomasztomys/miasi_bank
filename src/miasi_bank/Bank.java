@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Bank {
     private Set<Client> clients;
-    private Set<Account> accounts;
+    private Set<IAccount> accounts;
     private Set<Placement> placements;
     private Set<Loan> loans;
     private History history;
@@ -41,7 +41,7 @@ public class Bank {
         return clients;
     }
 
-    public Set<Account> getAccounts() {
+    public Set<IAccount> getAccounts() {
         return accounts;
     }
 
@@ -54,8 +54,8 @@ public class Bank {
     }
 
     public double getAccountTotalBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -67,8 +67,8 @@ public class Bank {
     }
 
     public double getAccountBalance(String clientID, String accountID) throws ClientOrProductDoesNotExistException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -131,8 +131,8 @@ public class Bank {
     }
 
     public double payment(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -152,8 +152,8 @@ public class Bank {
     }
 
     public double withdraw(String clientID, String accountID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -171,9 +171,9 @@ public class Bank {
     }
 
     public double transfer(String clientID, String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
-        Account accountFrom = null;
-        Account accountTo = null;
-        for (Account acc: accounts) {
+        IAccount accountFrom = null;
+        IAccount accountTo = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
             if(Objects.equals(acc.getID(), accountToID)) accountTo = acc;
         }
@@ -198,8 +198,8 @@ public class Bank {
     }
 
     public String createPlacement(String clientID, String accountID, double amount, Date closingDate, IInterest interest) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -219,8 +219,8 @@ public class Bank {
     }
 
     public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws ClientOrProductDoesNotExistException, ProductIsAlreadyClosedException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -247,8 +247,8 @@ public class Bank {
     }
 
     public String createLoan(String clientID, String accountID, double amount, Date closingDate, IInterest interest) throws ClientOrProductDoesNotExistException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -269,8 +269,8 @@ public class Bank {
     }
 
     public double payOffLoan(String clientID, String accountID, String loanID, Date closingDate) throws ClientOrProductDoesNotExistException, NoResourcesToPayOffLoanExeption, NoResourcesException, WrongValueException, ProductIsAlreadyClosedException, WrongCloseDateException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -304,8 +304,8 @@ public class Bank {
     }
 
     public boolean setDebitAccount(String clientID, String accountID, double maxDebit) throws DebitAccountAlreadyExists, ClientOrProductDoesNotExistException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -328,7 +328,7 @@ public class Bank {
     }
 
     public void calculateAndAddInterestToAccounts() throws WrongValueException {
-        for (Account acc: accounts) {
+        for (IAccount acc: accounts) {
            double interest = acc.calculateInterest();
            Operation operation = new Operation(OperationType.CALCULATE_INTEREST, acc.getClientID(), interest, acc.getID(), null);
 
@@ -340,8 +340,8 @@ public class Bank {
     }
 
     public double calculateAndAddInterestToAccount(String clientID, String accountID) throws ClientOrProductDoesNotExistException, WrongValueException {
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -363,8 +363,8 @@ public class Bank {
     public void changeInterest(String clientID, String accountID, IInterest interest) throws CustomException {
         Operation operation = new Operation(OperationType.CHANGE_INTEREST_MECHANISM, clientID, 0.0, accountID, null);
 
-        Account account = null;
-        for (Account acc: accounts) {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
         }
 
@@ -396,8 +396,8 @@ public class Bank {
         }
     }
 
-    public Set<Product> getProducts() {
-        Set<Product> products = new LinkedHashSet<>();
+    public Set<IAccount> getProducts() {
+        Set<IAccount> products = new LinkedHashSet<>();
         products.addAll(this.accounts);
         products.addAll(this.loans);
         products.addAll(this.placements);
@@ -405,7 +405,7 @@ public class Bank {
         return products;
     }
 
-    public Set<Product> makeRaport(ReportType type, Integer limit) {
+    public Set<IAccount> makeRaport(ReportType type, Integer limit) {
         ReportSystem reportSystem = new ReportSystem();
         if(type.equals(ReportType.UNDER_LIMIT)) {
             return reportSystem.getProductsUnderLimit(this.getProducts(), limit);
@@ -415,8 +415,8 @@ public class Bank {
     }
 
     public void makeExternalOperation(String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
-        Account accountFrom = null;
-        for (Account acc: accounts) {
+        IAccount accountFrom = null;
+        for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
         }
 
@@ -434,28 +434,27 @@ public class Bank {
         System.out.println("Dokonano przelewu na inne konto bankowe klienta " + clientID + " (" + accountFromID + " -> " + accountToID + ")");
     }
 
-    public void receiveExternalPaymentOperation(String accountID, double amount) throws WrongValueException, ClientOrProductDoesNotExistException {
-        Account account = null;
-        for (Account acc: accounts) {
-            if(Objects.equals(acc.getID(), accountID)) account = acc;
+    public void receiveExternalPaymentOperation(String accountToID, String accountFromID, double amount) throws WrongValueException, ClientOrProductDoesNotExistException {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
+            if(Objects.equals(acc.getID(), accountToID)) account = acc;
         }
 
         if(account == null) throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
 
-        account.payment(amount);
+        Operation operation = new Operation(OperationType.TRANSFER, accountToID, amount, accountFromID, accountToID);
+        account.payment(operation);
     }
 
-    public void receiveExternalErrorOperation(String accountID, double amount) {
-        Account account = null;
-        for (Account acc: accounts) {
-            if(Objects.equals(acc.getID(), accountID)) account = acc;
+    public void receiveExternalErrorOperation(String accountFromID, String accountToID, double amount) throws WrongValueException {
+        IAccount account = null;
+        for (IAccount acc: accounts) {
+            if(Objects.equals(acc.getID(), accountFromID)) account = acc;
         }
 
-        try {
-            account.payment(amount);
-        } catch (WrongValueException e) {
-            e.printStackTrace();
-        }
+        account.payment(amount);
+
+        System.out.println("Nieudane wykonanie przelewu na konto bankowe klienta (" + accountFromID + " -> " + accountToID + ")");
     }
 
 }
