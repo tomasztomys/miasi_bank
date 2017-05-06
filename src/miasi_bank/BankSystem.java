@@ -279,7 +279,7 @@ public class BankSystem {
         KIR.addBank(bank2);
 
         try {
-            bank.makeExternalOperation(bank2.getBankId(), client1, client1Account1, client4Account1, 500.0);
+            bank.makeExternalOperation(client1, client1Account1, client4Account1, 500.0);
         } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());
         } catch (NoResourcesException e) {

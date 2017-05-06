@@ -45,14 +45,45 @@ public class BankExternalTransfersTest {
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
     public void ExternalTransferToNotExistToAccount() throws Exception {
-        bank.makeExternalOperation(this.bank2.getBankId(), clientFromID, accountFromID, "xxx", 3000);
+        bank.makeExternalOperation(clientFromID, accountFromID, "xxx", 3000);
     }
 
     @Test
     public void ExternalTransfer() throws Exception {
-        bank.makeExternalOperation(this.bank2.getBankId(), clientFromID, accountFromID, accountToID, 3000);
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 3000);
 
-        assertEquals(0, bank.getAccountTotalBalance(clientFromID, accountFromID), 2000);
-        assertEquals(3000, bank2.getAccountTotalBalance(clientToID, accountToID), 3000);
+        assertEquals(2000, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
+        assertEquals(3000, bank2.getAccountTotalBalance(clientToID, accountToID), 0);
+    }
+
+    @Test (expected = NoResourcesException.class)
+    public void ExternalTransferMoreThanHave() throws Exception {
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 8000);
+    }
+
+    @Test (expected = WrongValueException.class)
+    public void ExternalTransferLessThanZero() throws Exception {
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, -3000);
+    }
+
+    @Test (expected = WrongValueException.class)
+    public void ExternalTransferZero() throws Exception {
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 0);
+    }
+
+    @Test (expected = ClientOrProductDoesNotExistException.class)
+    public void ExternalTransferFromFakeAccount() throws Exception {
+        bank.makeExternalOperation(clientFromID, "xxx", accountToID, 1000);
+    }
+
+    @Test
+    public void ExternalTransferFromDebitAccount() throws Exception {
+        bank.setDebitAccount(clientFromID, accountFromID, 10000);
+
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 10000);
+
+        assertEquals(5000, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
+        assertEquals(0, bank.getAccountBalance(clientFromID, accountFromID), 0);
+        assertEquals(10000, bank2.getAccountTotalBalance(clientToID, accountToID), 0);
     }
 }

@@ -60,7 +60,7 @@ public class Bank {
         }
 
         if(account == null) {
-            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Konto nie istnieje!");
         }
 
         return account.getTotalBalance();
@@ -73,7 +73,7 @@ public class Bank {
         }
 
         if(account == null) {
-            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Konto nie istnieje!");
         }
 
         return account.getBalance();
@@ -414,7 +414,7 @@ public class Bank {
         }
     }
 
-    public void makeExternalOperation(String bankID, String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
+    public void makeExternalOperation(String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
         IAccount accountFrom = null;
         for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountFromID) && Objects.equals(acc.getClientID(), clientID)) accountFrom = acc;
@@ -427,34 +427,34 @@ public class Bank {
         Operation operation = new Operation(OperationType.TRANSFER, clientID, amount, accountFromID, accountToID);
         accountFrom.withdraw(operation);
 
-        KIR.makeOperation(getBankId(), bankID, accountFromID, accountToID, amount);
+        KIR.makeOperation(accountFromID, accountToID, amount);
 
         history.addOperation(operation);
 
         System.out.println("Dokonano przelewu na inne konto bankowe klienta " + clientID + " (" + accountFromID + " -> " + accountToID + ")");
     }
 
-    public void receiveExternalPaymentOperation(String accountID, double amount) throws WrongValueException, ClientOrProductDoesNotExistException {
+    public void receiveExternalPaymentOperation(String accountToID, String accountFromID, double amount) throws WrongValueException, ClientOrProductDoesNotExistException {
         IAccount account = null;
         for (IAccount acc: accounts) {
-            if(Objects.equals(acc.getID(), accountID)) account = acc;
+            if(Objects.equals(acc.getID(), accountToID)) account = acc;
         }
 
         if(account == null) throw new ClientOrProductDoesNotExistException("Nie można zrealizować przelewu, klient lub konto, z którego ma być zrealizowana transakcja nie istanieje w Banku!");
 
-        account.payment(amount);
+        Operation operation = new Operation(OperationType.TRANSFER, accountToID, amount, accountFromID, accountToID);
+        account.payment(operation);
     }
 
-    public void receiveExternalErrorOperation(String accountID, double amount) throws WrongValueException {
+    public void receiveExternalErrorOperation(String accountFromID, String accountToID, double amount) throws WrongValueException {
         IAccount account = null;
         for (IAccount acc: accounts) {
-            if(Objects.equals(acc.getID(), accountID)) account = acc;
+            if(Objects.equals(acc.getID(), accountFromID)) account = acc;
         }
 
         account.payment(amount);
+
+        System.out.println("Nieudane wykonanie przelewu na konto bankowe klienta (" + accountFromID + " -> " + accountToID + ")");
     }
 
-    public void receiveExternalSuccessOperation() {
-        //do nothing
-    }
 }
