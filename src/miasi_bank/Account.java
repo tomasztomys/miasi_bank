@@ -16,12 +16,6 @@ public class Account extends Product {
         super(clientID, interest);
     }
 
-    public double calculateInterest() {
-        double interest = getInterest().calculate(getBalance());
-
-        return interest;
-    }
-
     public double getTotalBalance() {
         return getBalance();
     };

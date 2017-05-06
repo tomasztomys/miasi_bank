@@ -2,52 +2,84 @@ package miasi_bank;
 
 import custom_exceptions.NoResourcesException;
 import custom_exceptions.WrongValueException;
+import miasi_bank.interests.IInterest;
 
-public class DebitAccount extends Account {
+public class DebitAccount implements IAccount {
     private double debit;
     private double maxDebit;
 
-    public DebitAccount(Account account, Operation operation) {
-        super(account);
-        super.getHistory().addOperation(operation);
+    protected IAccount account;
 
+    public DebitAccount(IAccount account, Operation operation) {
+        this.account = account;
         this.maxDebit = operation.getAmount();
         this.debit = operation.getAmount();
+
+        account.getHistory().addOperation(operation);
     }
 
-    @Override
+    public String getID() {
+        return account.getID();
+    }
+
+    public String getClientID() {
+        return account.getClientID();
+    }
+
+    public double getBalance() {
+        return account.getBalance();
+    }
+
+    public void __setBalance(double balance) {
+        account.__setBalance(balance);
+    }
+
+    public History getHistory() {
+        return account.getHistory();
+    }
+
     public double getTotalBalance() {
-        return super.getBalance() + debit;
+        return account.getBalance() + debit;
     }
 
-    @Override
     public double withdraw(Operation operation) throws NoResourcesException, WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + account.getClientID() + " (" + account.getID() + ") Wpłata: " + operation.getAmount());
         }
 
-        if(getBalance() + debit < operation.getAmount()) {
-            throw new NoResourcesException("Nie masz tyle pieniędzy na koncie (clientID: " + getClientID() + ")");
+        if(account.getBalance() + debit < operation.getAmount()) {
+            throw new NoResourcesException("Nie masz tyle pieniędzy na koncie (clientID: " + account.getClientID() + ")");
         }
 
-        double withdrawFromMain = getBalance() - operation.getAmount();
+        double withdrawFromMain = account.getBalance() - operation.getAmount();
 
         if(withdrawFromMain < 0) {
-            if(getBalance() != 0.0) super.withdraw(getBalance());
+            if(account.getBalance() != 0.0) account.withdraw(account.getBalance());
             debit -= -withdrawFromMain;
         } else {
-            super.withdraw(operation.getAmount());
+            account.withdraw(operation.getAmount());
         }
 
-        getHistory().addOperation(new Operation(operation));
+        account.getHistory().addOperation(new Operation(operation));
 
-        return getBalance() + debit;
+        return account.getBalance() + debit;
     }
 
-    @Override
+    public double withdraw(double amount) throws NoResourcesException, WrongValueException {
+        return account.withdraw(amount);
+    }
+
+    public double calculateInterest() {
+        return account.calculateInterest();
+    }
+
+    public void setInterest(IInterest interest, Operation operation) {
+        account.setInterest(interest, operation);
+    }
+
     public double payment(Operation operation) throws WrongValueException {
         if(operation.getAmount() <= 0) {
-            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + getClientID() + " (" + getID() + ") Wpłata: " + operation.getAmount());
+            throw new WrongValueException("Nieprawidłowa wartość wpłaty " + account.getClientID() + " (" + account.getID() + ") Wpłata: " + operation.getAmount());
         }
 
         double debetMissing = maxDebit - debit;
@@ -56,11 +88,15 @@ public class DebitAccount extends Account {
             debit += operation.getAmount();
         } else {
             debit += debetMissing;
-            super.payment(operation.getAmount() - debetMissing);
+            account.payment(operation.getAmount() - debetMissing);
         }
 
-        getHistory().addOperation(new Operation(operation));
+        account.getHistory().addOperation(new Operation(operation));
 
-        return getBalance() + debit;
+        return account.getBalance() + debit;
+    }
+
+    public double payment(double amount) throws WrongValueException {
+        return account.payment(amount);
     }
 }

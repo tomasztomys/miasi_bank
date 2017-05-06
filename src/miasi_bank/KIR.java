@@ -1,6 +1,7 @@
 package miasi_bank;
 
 import custom_exceptions.ClientOrProductDoesNotExistException;
+import custom_exceptions.WrongValueException;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public final class KIR {
         banks.add(bank);
     }
 
-    public static void makeOperation(String bankFromID, String bankToID, String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException {
+    public static void makeOperation(String bankFromID, String bankToID, String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, WrongValueException {
         Bank bankFrom = null;
         Bank bankTo = null;
 

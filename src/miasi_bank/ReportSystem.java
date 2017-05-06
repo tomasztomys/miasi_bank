@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class ReportSystem {
 
-    public Set<Product> getProductsUnderLimit(Set<Product> products, Integer limit) {
-        Set<Product> result = new LinkedHashSet<>();
+    public Set<IAccount> getProductsUnderLimit(Set<IAccount> products, Integer limit) {
+        Set<IAccount> result = new LinkedHashSet<>();
         System.out.println("ID - saldo");
-        for(Product product: products) {
+        for(IAccount product: products) {
             if(product.getBalance() < limit) {
                 System.out.println(product.getID() + " - " + product.getBalance());
                 result.add(product);
@@ -18,10 +18,10 @@ public class ReportSystem {
         return result;
     }
 
-    public Set<Product> getProductsAtLeastLimit(Set<Product> products, Integer limit) {
-        Set<Product> result = new LinkedHashSet<>();
+    public Set<IAccount> getProductsAtLeastLimit(Set<IAccount> products, Integer limit) {
+        Set<IAccount> result = new LinkedHashSet<>();
         System.out.println("ID - saldo");
-        for(Product product: products) {
+        for(IAccount product: products) {
             if(product.getBalance() >= limit) {
                 System.out.println(product.getID() + " - " + product.getBalance());
                 result.add(product);
