@@ -30,16 +30,4 @@ public class Loan extends Product {
 
         return getBalance() + getInterest(date);
     }
-
-    @Deprecated
-    @Override
-    public double withdraw(Operation operation) {
-        return 0.0;
-    }
-
-    @Deprecated
-    @Override
-    public double payment(Operation operation) {
-        return 0.0;
-    }
 }
