@@ -60,7 +60,7 @@ public class Bank {
         }
 
         if(account == null) {
-            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Konto nie istnieje!");
         }
 
         return account.getTotalBalance();
@@ -73,7 +73,7 @@ public class Bank {
         }
 
         if(account == null) {
-            throw new ClientOrProductDoesNotExistException("Nie można spłacic kredytu, klient lub konto nie istanieje w Banku!");
+            throw new ClientOrProductDoesNotExistException("Konto nie istnieje!");
         }
 
         return account.getBalance();

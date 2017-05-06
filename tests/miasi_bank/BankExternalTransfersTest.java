@@ -52,8 +52,8 @@ public class BankExternalTransfersTest {
     public void ExternalTransfer() throws Exception {
         bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 3000);
 
-        assertEquals(0, bank.getAccountTotalBalance(clientFromID, accountFromID), 2000);
-        assertEquals(3000, bank2.getAccountTotalBalance(clientToID, accountToID), 3000);
+        assertEquals(2000, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
+        assertEquals(3000, bank2.getAccountTotalBalance(clientToID, accountToID), 0);
     }
 
     @Test (expected = NoResourcesException.class)
@@ -74,5 +74,16 @@ public class BankExternalTransfersTest {
     @Test (expected = ClientOrProductDoesNotExistException.class)
     public void ExternalTransferFromFakeAccount() throws Exception {
         bank.makeExternalOperation(clientFromID, "xxx", accountToID, 1000);
+    }
+
+    @Test
+    public void ExternalTransferFromDebitAccount() throws Exception {
+        bank.setDebitAccount(clientFromID, accountFromID, 10000);
+
+        bank.makeExternalOperation(clientFromID, accountFromID, accountToID, 10000);
+
+        assertEquals(5000, bank.getAccountTotalBalance(clientFromID, accountFromID), 0);
+        assertEquals(0, bank.getAccountBalance(clientFromID, accountFromID), 0);
+        assertEquals(10000, bank2.getAccountTotalBalance(clientToID, accountToID), 0);
     }
 }
