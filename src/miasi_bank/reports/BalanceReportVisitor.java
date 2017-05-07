@@ -8,9 +8,6 @@ import miasi_bank.loans.Loan;
 import miasi_bank.placements.Placement;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-/**
- * Created by Tomasz on 07.05.2017.
- */
 public class BalanceReportVisitor implements IVisitor {
    public void visit(Product product) {
 

@@ -5,9 +5,6 @@ import custom_exceptions.WrongValueException;
 import miasi_bank.interests.IInterest;
 import miasi_bank.reports.IVisitor;
 
-/**
- * Created by Tomasz Gwoździk on 05.05.2017.
- */
 public interface IAccount {
     double withdraw(Operation operation) throws NoResourcesException, WrongValueException;
     double withdraw(double amount) throws NoResourcesException, WrongValueException;

@@ -6,9 +6,6 @@ import custom_exceptions.WrongValueException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
- * Created by inf117199 on 21.04.2017.
- */
 public final class KIR {
     private static ArrayList<Bank> banks = new ArrayList<>();
 
