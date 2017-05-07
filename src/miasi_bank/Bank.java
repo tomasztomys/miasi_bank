@@ -292,16 +292,14 @@ public class Bank {
 
         double interest = loan.getInterest(closingDate);
 
-        System.out.println(account.getBalance());
-        System.out.println(loan.getBalance());
         if(account.getBalance() < loan.getBalance() + interest) {
             throw new NoResourcesToPayOffLoanExeption("Nie masz wystarczających środków aby spłacić kredyt!");
         }
 
-        loan.close(closingDate);
-        Operation operation = new Operation(OperationType.PAY_OFF_LOAN, clientID, loan.getTotalAmount(), accountID, loan.getID());
+        Operation operation = new Operation(OperationType.PAY_OFF_LOAN, clientID, loan.getTotalAmount(closingDate), accountID, loan.getID());
         double balance = account.withdraw(operation);
         history.addOperation(operation);
+        loan.close(closingDate);
 
         System.out.println("Dokonano spłaty kredytu z konta bankowe klienta " + clientID + " (" + accountID + ", " + loanID + "). Stan konta: " + balance);
         return balance;

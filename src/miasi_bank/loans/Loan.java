@@ -26,15 +26,19 @@ public class Loan extends Product {
         return super.getInterest().calculate(getBalance(), getCreationDate(), date);
     }
 
-    public double getTotalAmount() throws ProductIsAlreadyClosedException, WrongCloseDateException {
-        return this.state.getTotalAmount(this, this.closingDate);
+    public double getTotalAmount(Date date) throws ProductIsAlreadyClosedException, WrongCloseDateException {
+        this.validCloseDate(date);
+        return this.state.getTotalAmount(this, date);
     }
 
-    public void close(Date closeDate) throws WrongCloseDateException {
-        if(this.getCreationDate().compareTo(closeDate) > 0) {
+    public void validCloseDate(Date date) throws WrongCloseDateException {
+        if(this.getCreationDate().compareTo(date) > 0) {
             throw new WrongCloseDateException("Niepoprawna data zamkniecia kredytu " + this.getID());
         }
-        this.closingDate = closeDate;
+    }
+
+    public void close(Date date) throws WrongCloseDateException {
+        this.validCloseDate(date);
         this.state = new LoanClose();
     }
 }
