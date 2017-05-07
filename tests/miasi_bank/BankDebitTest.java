@@ -97,7 +97,6 @@ public class BankDebitTest {
         bank.payment(clientID, accountID, 2000.0);
 
         assertEquals(3000.0, bank.getAccountTotalBalance(clientID, accountID), 0);
-        assertEquals(3000.0, bank.getAccountTotalBalance(clientID, accountID), 0);
         assertEquals(0.0, bank.getAccountBalance(clientID, accountID), 0);
     }
 
