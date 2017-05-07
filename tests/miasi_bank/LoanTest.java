@@ -3,6 +3,7 @@ package miasi_bank;
 import custom_exceptions.*;
 
 import miasi_bank.interests.IInterest;
+import miasi_bank.loans.Loan;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,7 +59,7 @@ public class LoanTest {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
         Date date = format.parse("01.06.2017");
 
-        double payOff = loan.close(date);
+        double payOff = loan.getTotalAmount(date);
 
         assertEquals(1020.0, payOff, 0);
     }
@@ -69,6 +70,6 @@ public class LoanTest {
         Date date = format.parse("01.06.2017");
 
         loan.close(date);
-        loan.close(date);
+        loan.getTotalAmount(date);
     }
 }

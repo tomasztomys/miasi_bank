@@ -3,6 +3,7 @@ package miasi_bank;
 import custom_exceptions.*;
 
 import miasi_bank.interests.IInterest;
+import miasi_bank.placements.Placement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,40 +35,40 @@ public class PlacementTest {
         clientID = UniqueID.generate();
 
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("08.04.2018");
         placement = new Placement(clientID, 1000.0, date, interest);
     }
 
     @Test
     public void closeEqualEndDate() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("08.04.2018");
 
-        assertEquals(1020.0, placement.close(date), 0);
+        assertEquals(1020.0, placement.calculateAmount(date), 0);
     }
 
     @Test
     public void closeAfterEndDate() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("30.04.2017");
+        Date date = format.parse("08.04.2018");
 
-        assertEquals(1020.0, placement.close(date), 0);
+        assertEquals(1020.0, placement.calculateAmount(date), 0);
     }
 
     @Test
     public void closeBeforeEndDate() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("22.04.2017");
+        Date date = format.parse("22.08.2017");
 
-        assertEquals(1000.0, placement.close(date), 0);
+        assertEquals(1000.0, placement.calculateAmount(date), 0);
     }
 
     @Test (expected = ProductIsAlreadyClosedException.class)
     public void closeWhenInactive() throws Exception {
         DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2017");
+        Date date = format.parse("25.04.2018");
 
         placement.close(date);
-        placement.close(date);
+        placement.calculateAmount(date);
     }
 }

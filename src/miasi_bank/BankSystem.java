@@ -209,6 +209,8 @@ public class BankSystem {
             System.out.println(e.getMessage());
         } catch (ProductIsAlreadyClosedException e) {
             System.out.println(e.getMessage());
+        } catch (WrongCloseDateException e) {
+            e.printStackTrace();
         }
         System.out.println("-----------------------");
 
