@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -17,6 +18,7 @@ public class PlacementTest {
     private String clientID;
     private IInterest interest;
     private Placement placement;
+    private Date closeDate;
 
     @Before
     public void setUp() throws Exception {
@@ -34,41 +36,40 @@ public class PlacementTest {
 
         clientID = UniqueID.generate();
 
-        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("08.04.2018");
-        placement = new Placement(clientID, 1000.0, date, interest);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, 1);
+        closeDate = c.getTime();
+        placement = new Placement(clientID, 1000.0, closeDate, interest);
     }
 
     @Test
     public void closeEqualEndDate() throws Exception {
-        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("08.04.2018");
-
-        assertEquals(1020.0, placement.calculateAmount(date), 0);
+        assertEquals(1020.0, placement.calculateAmount(closeDate), 0);
     }
 
     @Test
     public void closeAfterEndDate() throws Exception {
-        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("08.04.2018");
+        Calendar c = Calendar.getInstance();
+        c.setTime(closeDate);
+        c.add(Calendar.DAY_OF_MONTH, 1);
 
-        assertEquals(1020.0, placement.calculateAmount(date), 0);
+        assertEquals(1020.0, placement.calculateAmount(c.getTime()), 0);
     }
 
     @Test
     public void closeBeforeEndDate() throws Exception {
-        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("22.08.2017");
+        Calendar c = Calendar.getInstance();
+        c.setTime(closeDate);
+        c.add(Calendar.DAY_OF_MONTH, -1);
 
-        assertEquals(1000.0, placement.calculateAmount(date), 0);
+        assertEquals(1000.0, placement.calculateAmount(c.getTime()), 0);
     }
 
     @Test (expected = ProductIsAlreadyClosedException.class)
     public void closeWhenInactive() throws Exception {
-        DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-        Date date = format.parse("25.04.2018");
 
-        placement.close(date);
-        placement.calculateAmount(date);
+        placement.close(closeDate);
+        placement.calculateAmount(closeDate);
     }
 }
