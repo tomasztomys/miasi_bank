@@ -259,6 +259,9 @@ public class BankSystem {
         bank.makeBalanceRaport(ReportType.AT_LEAST_LIMIT, 1000);
         System.out.println("-----------------------");
 
+        bank.makeBalanceReport();
+        System.out.println("-----------------------");
+
         Bank bank2 = new Bank();
 
         String client4 = null;

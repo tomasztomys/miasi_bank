@@ -5,6 +5,7 @@ import miasi_bank.interests.IInterest;
 import miasi_bank.loans.Loan;
 import miasi_bank.operations.Payment;
 import miasi_bank.placements.Placement;
+import miasi_bank.reports.BalanceReportVisitor;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -413,6 +414,14 @@ public class Bank {
             return reportSystem.getProductsBalanceUnderLimit(this.getProducts(), limit);
         } else {
             return reportSystem.getProductsBalanceAtLeastLimit(this.getProducts(), limit);
+        }
+    }
+
+    public void makeBalanceReport() {
+        BalanceReportVisitor visitor = new BalanceReportVisitor();
+
+        for(IAccount product: this.getProducts()) {
+            product.accept(visitor);
         }
     }
 

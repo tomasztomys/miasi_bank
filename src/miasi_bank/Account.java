@@ -2,6 +2,7 @@ package miasi_bank;
 
 import custom_exceptions.*;
 import miasi_bank.interests.IInterest;
+import miasi_bank.reports.IVisitor;
 
 public class Account extends Product {
     public Account(Product account) {
@@ -19,4 +20,9 @@ public class Account extends Product {
     public double getTotalBalance() {
         return getBalance();
     };
+
+    public void accept(IVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 }

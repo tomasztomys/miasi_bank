@@ -3,6 +3,7 @@ package miasi_bank;
 import custom_exceptions.NoResourcesException;
 import custom_exceptions.WrongValueException;
 import miasi_bank.interests.IInterest;
+import miasi_bank.reports.IVisitor;
 
 /**
  * Created by Tomasz Gwoździk on 05.05.2017.
@@ -25,4 +26,6 @@ public interface IAccount {
     void setInterest(IInterest interest, Operation operation);
 
     History getHistory();
+
+    void accept(IVisitor visitor);
 }

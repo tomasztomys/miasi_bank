@@ -2,6 +2,7 @@ package miasi_bank;
 
 import custom_exceptions.*;
 import miasi_bank.interests.IInterest;
+import miasi_bank.reports.IVisitor;
 
 import java.util.Date;
 
@@ -135,5 +136,11 @@ public class Product implements IAccount {
 
     public History getHistory() {
         return history;
+    }
+
+    @Override
+    public void accept(IVisitor visitor)
+    {
+        visitor.visit(this);
     }
 }
