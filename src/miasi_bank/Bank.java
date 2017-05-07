@@ -408,15 +408,6 @@ public class Bank {
         return products;
     }
 
-    public Set<IAccount> makeBalanceRaport(ReportType type, Integer limit) {
-        ReportSystem reportSystem = new ReportSystem();
-        if(type.equals(ReportType.UNDER_LIMIT)) {
-            return reportSystem.getProductsBalanceUnderLimit(this.getProducts(), limit);
-        } else {
-            return reportSystem.getProductsBalanceAtLeastLimit(this.getProducts(), limit);
-        }
-    }
-
     public void makeBalanceReport() {
         BalanceReportVisitor visitor = new BalanceReportVisitor();
 

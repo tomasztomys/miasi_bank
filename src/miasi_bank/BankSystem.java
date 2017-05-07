@@ -255,10 +255,6 @@ public class BankSystem {
         }
         System.out.println("-----------------------");
 
-        bank.makeBalanceRaport(ReportType.UNDER_LIMIT, 1000);
-        bank.makeBalanceRaport(ReportType.AT_LEAST_LIMIT, 1000);
-        System.out.println("-----------------------");
-
         bank.makeBalanceReport();
         System.out.println("-----------------------");
 
