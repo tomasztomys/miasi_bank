@@ -49,11 +49,11 @@ public class ReportSystemTest {
 
     @Test
     public void makeReportUnderLimit1000() throws Exception {
-        assertEquals(4, bank.makeRaport(ReportType.UNDER_LIMIT, 1000).size());
+        assertEquals(4, bank.makeBalanceRaport(ReportType.UNDER_LIMIT, 1000).size());
     }
 
     @Test
     public void makeReportAtLeastLimit1000() throws Exception {
-        assertEquals(5, bank.makeRaport(ReportType.AT_LEAST_LIMIT, 1000).size());
+        assertEquals(5, bank.makeBalanceRaport(ReportType.AT_LEAST_LIMIT, 1000).size());
     }
 }

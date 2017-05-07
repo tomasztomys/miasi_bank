@@ -255,8 +255,8 @@ public class BankSystem {
         }
         System.out.println("-----------------------");
 
-        bank.makeRaport(ReportType.UNDER_LIMIT, 1000);
-        bank.makeRaport(ReportType.AT_LEAST_LIMIT, 1000);
+        bank.makeBalanceRaport(ReportType.UNDER_LIMIT, 1000);
+        bank.makeBalanceRaport(ReportType.AT_LEAST_LIMIT, 1000);
         System.out.println("-----------------------");
 
         Bank bank2 = new Bank();

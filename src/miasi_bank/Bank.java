@@ -407,12 +407,12 @@ public class Bank {
         return products;
     }
 
-    public Set<IAccount> makeRaport(ReportType type, Integer limit) {
+    public Set<IAccount> makeBalanceRaport(ReportType type, Integer limit) {
         ReportSystem reportSystem = new ReportSystem();
         if(type.equals(ReportType.UNDER_LIMIT)) {
-            return reportSystem.getProductsUnderLimit(this.getProducts(), limit);
+            return reportSystem.getProductsBalanceUnderLimit(this.getProducts(), limit);
         } else {
-            return reportSystem.getProductsAtLeastLimit(this.getProducts(), limit);
+            return reportSystem.getProductsBalanceAtLeastLimit(this.getProducts(), limit);
         }
     }
 
