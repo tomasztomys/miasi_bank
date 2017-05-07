@@ -1,9 +1,10 @@
 package miasi_bank;
 
 import custom_exceptions.*;
-import miasi_bank.interests.ExtendedInterest;
 import miasi_bank.interests.IInterest;
+import miasi_bank.loans.Loan;
 import miasi_bank.operations.Payment;
+import miasi_bank.placements.Placement;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -218,7 +219,7 @@ public class Bank {
         return placement.getID();
     }
 
-    public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws ClientOrProductDoesNotExistException, ProductIsAlreadyClosedException, WrongValueException {
+    public double closePlacement(String clientID, String accountID, String placementID, Date closingDate) throws ClientOrProductDoesNotExistException, ProductIsAlreadyClosedException, WrongValueException, WrongCloseDateException {
         IAccount account = null;
         for (IAccount acc: accounts) {
             if(Objects.equals(acc.getID(), accountID) && Objects.equals(acc.getClientID(), clientID)) account = acc;
@@ -237,11 +238,13 @@ public class Bank {
             throw new ClientOrProductDoesNotExistException("Nie można zamknąć lokaty, lokata nie istnieje!");
         }
 
-        Operation operation = new Operation(OperationType.CLOSE_PLACEMENT, clientID, placement.close(closingDate), placementID, accountID);
+
+        Operation operation = new Operation(OperationType.CLOSE_PLACEMENT, clientID, placement.calculateAmount(closingDate), placementID, accountID);
 
         double balance = account.payment(operation);
         history.addOperation(operation);
 
+        placement.close(closingDate);
         System.out.println("Zamknięto lokatę z konta bankowe klienta " + clientID + " (" + accountID + ", " + placementID + "). Stan konta: " + balance);
         return balance;
     }

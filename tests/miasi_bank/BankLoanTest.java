@@ -3,6 +3,7 @@ package miasi_bank;
 import custom_exceptions.*;
 
 import miasi_bank.interests.IInterest;
+import miasi_bank.loans.Loan;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

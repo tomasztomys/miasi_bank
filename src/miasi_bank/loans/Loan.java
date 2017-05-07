@@ -1,6 +1,7 @@
-package miasi_bank;
+package miasi_bank.loans;
 
 import custom_exceptions.*;
+import miasi_bank.Product;
 import miasi_bank.interests.IInterest;
 import miasi_bank.loans.ILoanState;
 import miasi_bank.loans.LoanClose;
@@ -31,7 +32,7 @@ public class Loan extends Product {
 
     public void close(Date closeDate) throws WrongCloseDateException {
         if(this.getCreationDate().compareTo(closeDate) > 0) {
-            throw new WrongCloseDateException("Niepoprawna data zamkniecia Kredyt " + this.getID());
+            throw new WrongCloseDateException("Niepoprawna data zamkniecia kredytu " + this.getID());
         }
         this.closingDate = closeDate;
         this.state = new LoanClose();
