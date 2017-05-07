@@ -258,6 +258,12 @@ public class BankSystem {
         bank.makeBalanceReport();
         System.out.println("-----------------------");
 
+        bank.makeBalanceShortReport();
+        System.out.println("-----------------------");
+
+        bank.makeCumulativeReport();
+        System.out.println("-----------------------");
+
         Bank bank2 = new Bank();
 
         String client4 = null;

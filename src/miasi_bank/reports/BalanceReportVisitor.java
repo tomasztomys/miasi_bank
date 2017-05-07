@@ -15,29 +15,29 @@ public class BalanceReportVisitor implements IVisitor {
 
     @Override
     public void visit(Account account) {
-        System.out.println("Konto " + account.getID() + ", saldo: " + account.getBalance());
+        System.out.println("Konto " + account.getID() + ", saldo: " + account.getTotalBalance());
     }
 
     @Override
     public void visit(DebitAccount account) {
-        System.out.println("Konto debetowe " + account.getID() + ", saldo: " + account.getBalance());
+        System.out.println("Konto debetowe " + account.getID() + ", saldo: " + account.getBalance() + ", dostępne środki: " + account.getTotalBalance());
     }
 
     @Override
     public void visit(Loan loan) {
         if(loan.getIsActive()) {
-            System.out.println("Kredyt " + loan.getID() + " założony " + loan.getCreationDate() + " zostanie zamknięty " + loan.getCloseDate() + ", saldo: " + loan.getBalance());
+            System.out.println("Kredyt " + loan.getID() + " założony " + loan.getCreationDate() + " zostanie zamknięty " + loan.getCloseDate() + ", saldo: " + loan.getTotalBalance());
         } else {
-            System.out.println("Kredyt " + loan.getID() + " założony " + loan.getCreationDate() + " został zamknięty " + loan.getCloseDate() + ", saldo: " + loan.getBalance());
+            System.out.println("Kredyt " + loan.getID() + " założony " + loan.getCreationDate() + " został zamknięty " + loan.getCloseDate() + ", saldo: " + loan.getTotalBalance());
         }
     }
 
     @Override
     public void visit(Placement placement) {
         if(placement.getIsActive()) {
-            System.out.println("Lokata " + placement.getID() + " założona " + placement.getCreationDate() + " zostanie zamknięta " + placement.getInitCloseDate() + ", saldo: " + placement.getBalance());
+            System.out.println("Lokata " + placement.getID() + " założona " + placement.getCreationDate() + " zostanie zamknięta " + placement.getInitCloseDate() + ", saldo: " + placement.getTotalBalance());
         } else {
-            System.out.println("Lokata " + placement.getID() + " założona " + placement.getCreationDate() + " została zamknięta " + placement.getCloseDate() + ", saldo: " + placement.getBalance());
+            System.out.println("Lokata " + placement.getID() + " założona " + placement.getCreationDate() + " została zamknięta " + placement.getCloseDate() + ", saldo: " + placement.getTotalBalance());
         }
     }
 }

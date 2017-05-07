@@ -6,6 +6,8 @@ import miasi_bank.loans.Loan;
 import miasi_bank.operations.Payment;
 import miasi_bank.placements.Placement;
 import miasi_bank.reports.BalanceReportVisitor;
+import miasi_bank.reports.BalanceShortReportVisitor;
+import miasi_bank.reports.CumulativeReportVisitor;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -414,6 +416,24 @@ public class Bank {
         for(IAccount product: this.getProducts()) {
             product.accept(visitor);
         }
+    }
+
+    public void makeBalanceShortReport() {
+        BalanceShortReportVisitor visitor = new BalanceShortReportVisitor();
+
+        for(IAccount product: this.getProducts()) {
+            product.accept(visitor);
+        }
+    }
+
+    public void makeCumulativeReport() {
+        CumulativeReportVisitor visitor = new CumulativeReportVisitor();
+
+        for(IAccount product: this.getProducts()) {
+            product.accept(visitor);
+        }
+
+        System.out.println("Saldo banku z wszystkich produktów wynosi: " + visitor.result);
     }
 
     public void makeExternalOperation(String clientID,  String accountFromID, String accountToID, double amount) throws ClientOrProductDoesNotExistException, NoResourcesException, WrongValueException {
