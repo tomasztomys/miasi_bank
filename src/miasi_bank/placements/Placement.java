@@ -4,19 +4,18 @@ import custom_exceptions.*;
 import miasi_bank.Product;
 import miasi_bank.interests.IInterest;
 import miasi_bank.loans.LoanClose;
+import miasi_bank.reports.IVisitor;
 
 import java.util.Date;
 
 public class Placement extends Product {
     private Date initCloseDate;
     private Date closeDate;
-    private boolean isActive;
     IPlacementState state;
 
     public Placement(String clientID, double startBalance, Date initCloseDate, IInterest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
 
-        this.isActive = true;
         this.initCloseDate = initCloseDate;
         this.state = new PlacementOpen();
     }
@@ -43,5 +42,14 @@ public class Placement extends Product {
     public void close(Date date) throws ProductIsAlreadyClosedException, WrongCloseDateException {
         this.validCloseDate(date);
         this.state = new PlacementClose();
+    }
+
+    public boolean getIsActive() {
+        return this.state.getIsActive();
+    }
+
+    public void accept(IVisitor visitor)
+    {
+        visitor.visit(this);
     }
 }

@@ -3,6 +3,7 @@ package miasi_bank;
 import custom_exceptions.NoResourcesException;
 import custom_exceptions.WrongValueException;
 import miasi_bank.interests.IInterest;
+import miasi_bank.reports.IVisitor;
 
 public class DebitAccount implements IAccount {
     private double debit;
@@ -98,5 +99,10 @@ public class DebitAccount implements IAccount {
 
     public double payment(double amount) throws WrongValueException {
         return account.payment(amount);
+    }
+
+    public void accept(IVisitor visitor)
+    {
+        visitor.visit(this);
     }
 }

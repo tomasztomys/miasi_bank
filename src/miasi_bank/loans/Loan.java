@@ -6,20 +6,23 @@ import miasi_bank.interests.IInterest;
 import miasi_bank.loans.ILoanState;
 import miasi_bank.loans.LoanClose;
 import miasi_bank.loans.LoanOpen;
+import miasi_bank.reports.IVisitor;
 
 import java.util.Date;
 
 public class Loan extends Product {
     private Date closingDate;
-    private boolean isActive;
     private ILoanState state = null;
 
     public Loan(String clientID, double startBalance, Date closingDate, IInterest interest) throws WrongValueException {
         super(clientID, startBalance, interest);
 
-        this.isActive = true;
         this.closingDate = closingDate;
         this.state = new LoanOpen();
+    }
+
+    public Date getCloseDate() {
+        return closingDate;
     }
 
     public double getInterest(Date date) {
@@ -40,5 +43,14 @@ public class Loan extends Product {
     public void close(Date date) throws WrongCloseDateException {
         this.validCloseDate(date);
         this.state = new LoanClose();
+    }
+
+    public boolean getIsActive() {
+        return this.state.getIsActive();
+    }
+
+    public void accept(IVisitor visitor)
+    {
+        visitor.visit(this);
     }
 }
