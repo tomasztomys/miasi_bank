@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -38,8 +39,10 @@ public class BankPlacementTest {
         clientID = bank.addClient("Tomasz", "Gwozdzik", "12323534");
         accountID = bank.createAccount(clientID, interest);
 
-        dateFormat = new SimpleDateFormat("dd.MM.yyy");
-        closeDate = dateFormat.parse("15.04.2017");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.YEAR, 1);
+        closeDate = c.getTime();
     }
 
     @Test (expected = ClientOrProductDoesNotExistException.class)
@@ -117,8 +120,11 @@ public class BankPlacementTest {
     public void ClosePlacementBeforeEndTime() throws Exception {
         bank.payment(clientID, accountID, 3000);
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
+        Calendar c = Calendar.getInstance();
+        c.setTime(closeDate);
+        c.add(Calendar.MONTH, -1);
 
-        double balance = bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("10.02.2017"));
+        double balance = bank.closePlacement(clientID, accountID, placementID, c.getTime());
 
         assertEquals(3000.0, balance, 0);
     }
@@ -127,8 +133,10 @@ public class BankPlacementTest {
     public void ClosePlacementAfterEndTime() throws Exception {
         bank.payment(clientID, accountID, 3000);
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
-
-        double balance = bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("30.04.2017"));
+        Calendar c = Calendar.getInstance();
+        c.setTime(closeDate);
+        c.add(Calendar.MONTH, 1);
+        double balance = bank.closePlacement(clientID, accountID, placementID, c.getTime());
 
         assertEquals(3200.0, balance, 0);
     }
@@ -138,7 +146,7 @@ public class BankPlacementTest {
         bank.payment(clientID, accountID, 3000);
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
 
-        double balance = bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("15.04.2017"));
+        double balance = bank.closePlacement(clientID, accountID, placementID, closeDate);
 
         assertEquals(3200.0, balance, 0);
     }
@@ -148,8 +156,11 @@ public class BankPlacementTest {
         bank.payment(clientID, accountID, 3000);
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
 
-        bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("15.04.2017"));
-        bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("17.04.2017"));
+        Calendar c = Calendar.getInstance();
+        c.setTime(closeDate);
+        c.add(Calendar.MONTH, +1);
+        bank.closePlacement(clientID, accountID, placementID, c.getTime());
+        bank.closePlacement(clientID, accountID, placementID, c.getTime());
     }
 
     @Test
@@ -157,7 +168,7 @@ public class BankPlacementTest {
         bank.payment(clientID, accountID, 3000);
         String placementID = bank.createPlacement(clientID, accountID, 2000, closeDate, interest);
 
-        bank.closePlacement(clientID, accountID, placementID, dateFormat.parse("15.04.2017"));
+        bank.closePlacement(clientID, accountID, placementID, closeDate);
 
         assertEquals(3, bank.getHistory().getHistory().size(), 0);
     }
