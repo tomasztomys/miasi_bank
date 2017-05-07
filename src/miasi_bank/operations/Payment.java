@@ -23,7 +23,7 @@ public class Payment implements IOperation {
             throw new WrongValueException("Nieprawidłowa wartość wpłaty na konto " + account.getID() + " o wartości: " + Double.toString(this.amount));
         }
 
-        this.account.__setBalance(this.account.getBalance() + this.amount);
+        this.account.payment(operation);
 
         
         this.account.getHistory().addOperation(new Operation(operation));
