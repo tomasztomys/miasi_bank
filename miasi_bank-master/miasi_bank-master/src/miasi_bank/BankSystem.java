@@ -9,11 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BankSystem {
-	public static void elo() {
-		System.out.println("Jakiœ print");
-	}
-	
+public class BankSystem {	
     public static void main(String[] args) {
         IInterest interest1 = new LinearInterest();
         IInterest interest2 = new LinearInterest();
@@ -64,7 +60,7 @@ public class BankSystem {
         System.out.println("-----------------------");
 
         try {
-            bank.payment(client1, client1Account1, 200.0);
+            bank.payment(client1, client1Account1, 500.0);
         } catch (ClientOrProductDoesNotExistException e) {
             System.out.println(e.getMessage());
         } catch (WrongValueException e) {
@@ -298,7 +294,5 @@ public class BankSystem {
         } catch (WrongValueException e) {
             System.out.println(e.getMessage());
         }
-        
-        elo();
     }
 }
